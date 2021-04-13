@@ -9,6 +9,8 @@ from lazypredict.Supervised import LazyRegressor
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # set display options
 pd.set_option('display.max_columns', 15)
@@ -26,4 +28,18 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2, random_s
 # fit all models
 reg = LazyRegressor(predictions=True)
 models, predictions = reg.fit(X_train, X_test, y_train, y_test)
+print(models)
 
+# set new index for lineplot
+y_act = y_test.reset_index()
+
+# Plot predictions
+plt.figure(figsize=(14, 6))
+plt.title("Predictions and Test Data (Store 6)")
+plt.xlabel("Days")
+plt.ylabel("Sales")
+sns.lineplot(data=predictions['XGBRegressor'], label="XGBRegressor")
+sns.lineplot(data=predictions['SVR'], label="SVR")
+sns.lineplot(data=predictions['MLPRegressor'], label="MLPRegressor")
+sns.lineplot(data=y_act['Sales'], label="Test Data")
+plt.show()
