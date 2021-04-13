@@ -564,6 +564,12 @@ sales_Store20 = sales.loc[sales.Store == 20]
 sales_Store25 = sales.loc[sales.Store == 25]
 sales_Store29 = sales.loc[sales.Store == 29]
 
+# Store data for modeling tasks
+sales_Store6 .to_pickle('../../../data/rossmann/intermediate/store6.pkl')
+sales_Store20.to_pickle('../../../data/rossmann/intermediate/store20.pkl')
+sales_Store25.to_pickle('../../../data/rossmann/intermediate/store25.pkl')
+sales_Store29.to_pickle('../../../data/rossmann/intermediate/store29.pkl')
+
 # get defined columns
 sales_Store6 = sales_Store6.loc[:, ['Sales', 'Date']]
 sales_Store20 = sales_Store20.loc[:, ['Sales', 'Date']]
