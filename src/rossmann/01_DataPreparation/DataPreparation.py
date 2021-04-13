@@ -41,6 +41,7 @@
 
 # import libraries
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # set display options
 pd.set_option('display.max_columns', 15)
@@ -50,8 +51,8 @@ pd.set_option('display.max_columns', 15)
 ### Step 1: Gather the data
 
 # Filepaths
-train_file_path = "../../data/rossmann/input/train.csv"
-store_file_path = "../../data/rossmann/input/store.csv"
+train_file_path = "../../../data/rossmann/input/train.csv"
+store_file_path = "../../../data/rossmann/input/store.csv"
 # test and submission not relevant for modeling
 # test_file_path = "../../data/rossmann/input/test.csv"
 # submission_file_path = "../../data/rossmann/input/sample_submission.csv"
@@ -264,8 +265,6 @@ longDistances = store['CompetitionDistance'].loc[(store.CompetitionDistance > 40
 # Replace NaN values with 0
 store['CompetitionDistance'] = store['CompetitionDistance'].fillna(0)
 
-# TODO: imputation of 0 values
-
 # ---------- CompetitionOpenSinceMonth (float64) ----------
 # gives the approximate year and month of the time the nearest competitor was opened
 
@@ -298,8 +297,6 @@ datatype = store['CompetitionOpenSinceMonth'].dtype
 # Check values again
 store['CompetitionOpenSinceMonth'].unique()
 # print --> [ 9 11 12  4 10  8  0  3  6  5  1  2  7]
-
-# TODO: imputation of 0 values
 
 # ---------- CompetitionOpenSinceYear (float64) ----------
 # gives the approximate year and month of the time the nearest competitor was opened
@@ -335,8 +332,6 @@ datatype = store['CompetitionOpenSinceYear'].dtype
 store['CompetitionOpenSinceYear'].unique()
 # print --> [2008 2007 2006 2009 2015 2013 2014 2000 2011    0 2010 2005 1999 2003
 #            2012 2004 2002 1961 1995 2001 1990 1994 1900 1998]
-
-# TODO: imputation of 0 values
 
 # ---------- Promo2 (int64) ----------
 # Promo2 is a continuing and consecutive promotion for some stores:
@@ -380,9 +375,6 @@ datatype = store['Promo2SinceWeek'].dtype
 store['Promo2SinceWeek'].unique()
 # print --> [ 0 13 14  1 45 40 26 22  5  6 10 31 37  9 39 27 18 35 23 48 36 50 44 49 28]
 
-# TODO: imputation of 0 values
-
-
 # ---------- Promo2SinceYear (float64) ----------
 # describes the year and calendar week when the store started participating in Promo2
 
@@ -417,8 +409,6 @@ datatype = store['Promo2SinceYear'].dtype
 store['Promo2SinceYear'].unique()
 # print --> [   0 2010 2011 2012 2009 2014 2015 2013]
 
-# TODO: imputation of 0 values
-
 # ---------- PromoInterval (object) ----------
 # describes the consecutive intervals Promo2 is started, naming the months the promotion is started anew.
 # E.g. "Feb,May,Aug,Nov" means each round starts in February, May, August, November of any given year for that store
@@ -442,8 +432,6 @@ store['PromoInterval'] = store['PromoInterval'].fillna('')
 store['PromoInterval'].unique()
 # print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
 
-# TODO: transform information (split into separate cols)
-
 # -----------------------------------------------------------------------------
 # --- Final proof of dataframe ---
 
@@ -464,6 +452,77 @@ store_missing_values_count = store.isnull().sum()
 # train.sort_values(by=['Date', 'Store'])
 
 # -----------------------------------------------------------------------------
+## Join dataframes
+
+# left join()
+sales = pd.merge(left=train, right=store, how='left', left_on='Store', right_on='Store')
+
+# Check null values after left join
+sales_missing_values_count = sales.isnull().sum()
+# print(sales_missing_values_count)
+# --> OK (no missing values)
+
+# Null values: CompetitionDistance 3
+# TODO: imputation of 0 values
+# print(sales['CompetitionDistance'].loc[(sales.CompetitionDistance == 0)].count())
+# print --> 2642
+
+# Null values: CompetitionOpenSinceMonth 354
+# TODO: imputation of 0 values
+# print(sales['CompetitionOpenSinceMonth'].loc[(sales.CompetitionOpenSinceMonth == 0)].count())
+# print --> 323348
+
+# Null values: CompetitionOpenSinceYear 354
+# TODO: imputation of 0 values
+# print(sales['CompetitionOpenSinceYear'].loc[(sales.CompetitionOpenSinceYear == 0)].count())
+# print --> 323348
+
+# Null values: Promo2SinceWeek 544
+# TODO: imputation of 0 values
+# print(sales['Promo2SinceWeek'].loc[(sales.Promo2SinceWeek == 0)].count())
+# print --> 508031
+
+# Null values: Promo2SinceYear 544
+# TODO: imputation of 0 values
+# print(sales['Promo2SinceYear'].loc[(sales.Promo2SinceYear == 0)].count())
+# print --> 508031
+
+# Null values: PromoInterval 544
+# TODO: transform information (split into separate cols)
+# print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
+# print --> 508031
+
+# Store data for modeling tasks
+sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
+
+# this exceeds GitHub's file size limit of 100.00 MB
+# Commands for large files
+# git lfs install
+# git lfs track "*.pkl"
+
+# --------------------------------------------------------------------------
+## Plot data
+
+# Sum of all stores
+grouped_sales = sales.groupby('Date').Sales.sum()
+# print(grouped_sales)
+
+# Mean of all stores
+# grouped_sales = sales.groupby('Date').Sales.mean()
+# print(grouped_sales)
+
+#Determine rolling statistics
+rolmean = grouped_sales.rolling(window=30).mean() #window size 30 denotes 30 days
+rolstd = grouped_sales.rolling(window=30).std()
+
+#Plot rolling statistics
+orig = plt.plot(grouped_sales, color='blue', label='Original')
+mean = plt.plot(rolmean, color='red', label='Rolling Mean')
+std = plt.plot(rolstd, color='black', label='Rolling Std')
+plt.legend(loc='best')
+plt.title('Rolling Mean & Standard Deviation')
+plt.show()
+
 
 ### Step 3: Select a model
 
