@@ -90,7 +90,7 @@ missing_values_count = train.isnull().sum()
 # Store - a unique Id for each store
 
 # Check negative store IDs or ID = 0
-train['Store'].loc[(train.Store <= 0)]
+storeIds = train['Store'].loc[(train.Store <= 0)]
 # print --> no negative values or ID = 0
 
 # ---------- DayOfWeek(int64) ----------
@@ -109,14 +109,14 @@ train['Date'] = pd.to_datetime(train['Date'], format="%Y-%m-%d")
 # The turnover for any given day (this is what you are predicting)
 
 # Check negative sales
-train['Sales'].loc[(train.Sales < 0)]
+sales = train['Sales'].loc[(train.Sales < 0)]
 # print --> no negative values
 
 # ---------- Customers (int64) ----------
 # Customers - the number of customers on a given day
 
 # Check negative values
-train['Customers'].loc[(train.Customers < 0)]
+customers = train['Customers'].loc[(train.Customers < 0)]
 # print --> no negative values
 
 # Check values
@@ -175,6 +175,11 @@ train['SchoolHoliday'].unique()
 # print(train.describe().apply(lambda s: s.apply(lambda x: format(x, 'g'))))
 # --> OK
 
+# Get the number of missing data points per column
+# missing_values_count = train.isnull().sum()
+# print(missing_values_count)
+# --> OK (no missing values)
+
 # -----------------------------------------------------------------------------
 
 ## store file
@@ -211,7 +216,7 @@ store_missing_values_count = store.isnull().sum()
 # a unique Id for each store
 
 # Check negative store IDs or ID = 0
-store['Store'].loc[(train.Store <= 0)]
+storeIds = store['Store'].loc[(train.Store <= 0)]
 # print --> no negative values or ID = 0
 
 # ---------- StoreType (object) ----------
@@ -242,9 +247,24 @@ store['CompetitionDistance'].describe().apply(lambda x: format(x, 'f'))
 # 75%       6882.500000
 # max      75860.000000
 
-# Null values:
-# CompetitionDistance            3
+# Check max distance 75860 (outlier?)
+longDistances = store['CompetitionDistance'].loc[(store.CompetitionDistance > 40000)]
+# print(longDistances)
+# 109    46590.0
+# 121    58260.0
+# 452    75860.0
+# 461    44320.0
+# 523    40860.0
+# 725    40540.0
+# 746    45740.0
+# 800    48330.0
+# --> OK
 
+# Null values: CompetitionDistance 3
+# Replace NaN values with 0
+store['CompetitionDistance'] = store['CompetitionDistance'].fillna(0)
+
+# TODO: imputation of 0 values
 
 # ---------- CompetitionOpenSinceMonth (float64) ----------
 # gives the approximate year and month of the time the nearest competitor was opened
@@ -264,6 +284,7 @@ store['CompetitionOpenSinceMonth'].describe().apply(lambda x: format(x, 'f'))
 store['CompetitionOpenSinceMonth'].unique()
 # print --> [ 9. 11. 12.  4. 10.  8. nan  3.  6.  5.  1.  2.  7.]
 
+# Null values: CompetitionOpenSinceMonth 354
 # Replace NaN values with 0
 store['CompetitionOpenSinceMonth'] = store['CompetitionOpenSinceMonth'].fillna(0)
 
@@ -271,53 +292,173 @@ store['CompetitionOpenSinceMonth'] = store['CompetitionOpenSinceMonth'].fillna(0
 store['CompetitionOpenSinceMonth'] = store['CompetitionOpenSinceMonth'].astype('int64')
 
 # check dtype again
-store['CompetitionOpenSinceMonth'].dtype
+datatype = store['CompetitionOpenSinceMonth'].dtype
 # print --> int64
 
 # Check values again
 store['CompetitionOpenSinceMonth'].unique()
 # print --> [ 9 11 12  4 10  8  0  3  6  5  1  2  7]
 
-# Null values:
-# CompetitionOpenSinceMonth    354
-
+# TODO: imputation of 0 values
 
 # ---------- CompetitionOpenSinceYear (float64) ----------
 # gives the approximate year and month of the time the nearest competitor was opened
 
-print(store['CompetitionOpenSinceMonth'].describe().apply(lambda x: format(x, 'f')))
+store['CompetitionOpenSinceYear'].describe().apply(lambda x: format(x, 'f'))
+# print
+# count     761.000000
+# mean     2008.668857
+# std         6.195983
+# min      1900.000000
+# 25%      2006.000000
+# 50%      2010.000000
+# 75%      2013.000000
+# max      2015.000000
 
-# Null values:
-# CompetitionOpenSinceYear     354
+# Check values
+store['CompetitionOpenSinceYear'].unique()
+# print --> [2008. 2007. 2006. 2009. 2015. 2013. 2014. 2000. 2011.   nan 2010. 2005.
+#            1999. 2003. 2012. 2004. 2002. 1961. 1995. 2001. 1990. 1994. 1900. 1998.]
 
+# Null values: CompetitionOpenSinceYear 354
+# Replace NaN values with 0
+store['CompetitionOpenSinceYear'] = store['CompetitionOpenSinceYear'].fillna(0)
+
+# transform from float to int
+store['CompetitionOpenSinceYear'] = store['CompetitionOpenSinceYear'].astype('int64')
+
+# check dtype again
+datatype = store['CompetitionOpenSinceYear'].dtype
+# print --> int64
+
+# Check values again
+store['CompetitionOpenSinceYear'].unique()
+# print --> [2008 2007 2006 2009 2015 2013 2014 2000 2011    0 2010 2005 1999 2003
+#            2012 2004 2002 1961 1995 2001 1990 1994 1900 1998]
+
+# TODO: imputation of 0 values
 
 # ---------- Promo2 (int64) ----------
 # Promo2 is a continuing and consecutive promotion for some stores:
 # 0 = store is not participating, 1 = store is participating
 
+# Check values
+store['Promo2'].unique()
+# print --> [0 1]
 
 # ---------- Promo2SinceWeek (float64) ----------
 # describes the year and calendar week when the store started participating in Promo2
 
-# Null values:
-# Promo2SinceWeek              544
+store['Promo2SinceWeek'].describe().apply(lambda x: format(x, 'f'))
+# print
+# count    571.000000
+# mean      23.595447
+# std       14.141984
+# min        1.000000
+# 25%       13.000000
+# 50%       22.000000
+# 75%       37.000000
+# max       50.000000
+
+# Check values
+store['Promo2SinceWeek'].unique()
+# print --> [nan 13. 14.  1. 45. 40. 26. 22.  5.  6. 10. 31. 37.  9. 39. 27. 18. 35. 23. 48. 36. 50. 44. 49. 28.]
+
+# Null values: Promo2SinceWeek 544
+# Replace NaN values with 0
+store['Promo2SinceWeek'] = store['Promo2SinceWeek'].fillna(0)
+
+# transform from float to int
+store['Promo2SinceWeek'] = store['Promo2SinceWeek'].astype('int64')
+
+# check dtype again
+datatype = store['Promo2SinceWeek'].dtype
+# print(datatype)
+# print --> int64
+
+# Check values again
+store['Promo2SinceWeek'].unique()
+# print --> [ 0 13 14  1 45 40 26 22  5  6 10 31 37  9 39 27 18 35 23 48 36 50 44 49 28]
+
+# TODO: imputation of 0 values
 
 
 # ---------- Promo2SinceYear (float64) ----------
 # describes the year and calendar week when the store started participating in Promo2
 
-# Null values:
-# Promo2SinceYear              544
+store['Promo2SinceYear'].describe().apply(lambda x: format(x, 'f'))
+# print
+# count     571.000000
+# mean     2011.763573
+# std         1.674935
+# min      2009.000000
+# 25%      2011.000000
+# 50%      2012.000000
+# 75%      2013.000000
+# max      2015.000000
 
+# Check values
+store['Promo2SinceYear'].unique()
+# print --> [  nan 2010. 2011. 2012. 2009. 2014. 2015. 2013.]
+
+# Null values: Promo2SinceYear 544
+# Replace NaN values with 0
+store['Promo2SinceYear'] = store['Promo2SinceYear'].fillna(0)
+
+# transform from float to int
+store['Promo2SinceYear'] = store['Promo2SinceYear'].astype('int64')
+
+# check dtype again
+datatype = store['Promo2SinceYear'].dtype
+# print(datatype)
+# print --> int64
+
+# Check values again
+store['Promo2SinceYear'].unique()
+# print --> [   0 2010 2011 2012 2009 2014 2015 2013]
+
+# TODO: imputation of 0 values
 
 # ---------- PromoInterval (object) ----------
 # describes the consecutive intervals Promo2 is started, naming the months the promotion is started anew.
 # E.g. "Feb,May,Aug,Nov" means each round starts in February, May, August, November of any given year for that store
 
-# Null values:
-# PromoInterval                544
+store['PromoInterval'].describe()
+# print
+# count                 571
+# unique                  3
+# top       Jan,Apr,Jul,Oct
+# freq                  335
+
+# Check values
+store['PromoInterval'].unique()
+# print --> [nan 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
+
+# Null values: PromoInterval 544
+# Replace NaN values with empty string
+store['PromoInterval'] = store['PromoInterval'].fillna('')
+
+# Check values again
+store['PromoInterval'].unique()
+# print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
+
+# TODO: transform information (split into separate cols)
 
 # -----------------------------------------------------------------------------
+# --- Final proof of dataframe ---
+
+# Check dtypes again
+# print(store.dtypes)
+# --> OK
+
+# show data metrics
+# print(store.describe().apply(lambda s: s.apply(lambda x: format(x, 'g'))))
+# --> OK
+
+# Get the number of missing data points per column
+store_missing_values_count = store.isnull().sum()
+# print(store_missing_values_count)
+# --> OK (no missing values)
 
 # sort by multiple values
 # train.sort_values(by=['Date', 'Store'])
