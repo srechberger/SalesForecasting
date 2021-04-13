@@ -448,9 +448,6 @@ store_missing_values_count = store.isnull().sum()
 # print(store_missing_values_count)
 # --> OK (no missing values)
 
-# sort by multiple values
-# train.sort_values(by=['Date', 'Store'])
-
 # -----------------------------------------------------------------------------
 ## Join dataframes
 
@@ -499,6 +496,10 @@ sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
 # Commands for large files
 # git lfs install
 # git lfs track "*.pkl"
+# see --> .gitattributes
+
+# output = pd.DataFrame(sales)
+# output.to_csv('../../../data/rossmann/output/sales.csv', index=False)
 
 # --------------------------------------------------------------------------
 ## Plot data
@@ -511,25 +512,89 @@ grouped_sales = sales.groupby('Date').Sales.sum()
 # grouped_sales = sales.groupby('Date').Sales.mean()
 # print(grouped_sales)
 
-#Determine rolling statistics
+# Determine rolling statistics
 rolmean = grouped_sales.rolling(window=30).mean() #window size 30 denotes 30 days
 rolstd = grouped_sales.rolling(window=30).std()
 
-#Plot rolling statistics
+# Plot rolling statistics for all stores
 orig = plt.plot(grouped_sales, color='blue', label='Original')
 mean = plt.plot(rolmean, color='red', label='Rolling Mean')
 std = plt.plot(rolstd, color='black', label='Rolling Std')
+plt.xlabel("Date")
+plt.ylabel("Sales")
 plt.legend(loc='best')
-plt.title('Rolling Mean & Standard Deviation')
+plt.title('Summed Sales Figures of all Stores')
 plt.show()
 
+# -----------------------------------------------------------------------------------
+### STORE 1
 
-### Step 3: Select a model
+# Select data for StoreId == 1
+sales_Store1 = sales.loc[sales.Store == 1]
 
-### Step 4: Train the model
+# get defined columns
+sales_Store1 = sales_Store1.loc[:, ['Sales', 'Date']]
 
-### Step 5: Evaluate the model
+# sort by date
+sales_Store1 = sales_Store1.sort_values(by=['Date'])
 
-### Step 6: Tune parameters
+# groupby Date if multiple entries per date exist
+sales_Store1 = sales_Store1.groupby('Date').Sales.sum()
 
-### Step 7: Get predictions
+# Determine rolling statistics
+rolmean_S1 = sales_Store1.rolling(window=30).mean() #window size 30 denotes 30 days
+rolstd_S1 = sales_Store1.rolling(window=30).std()
+
+# Plot rolling statistics for Store 1
+orig_S1 = plt.plot(sales_Store1, color='blue', label='Original')
+mean_S1 = plt.plot(rolmean_S1, color='red', label='Rolling Mean')
+std_S1 = plt.plot(rolstd_S1, color='black', label='Rolling Std')
+plt.xlabel("Date")
+plt.ylabel("Sales")
+plt.legend(loc='best')
+plt.title('Sales Figures Store 1')
+plt.show()
+
+# -----------------------------------------------------------------------------------
+### Several Stores
+
+# Select data for different stores
+sales_Store6 = sales.loc[sales.Store == 6]
+sales_Store20 = sales.loc[sales.Store == 20]
+sales_Store25 = sales.loc[sales.Store == 25]
+sales_Store29 = sales.loc[sales.Store == 29]
+
+# get defined columns
+sales_Store6 = sales_Store6.loc[:, ['Sales', 'Date']]
+sales_Store20 = sales_Store20.loc[:, ['Sales', 'Date']]
+sales_Store25 = sales_Store25.loc[:, ['Sales', 'Date']]
+sales_Store29 = sales_Store29.loc[:, ['Sales', 'Date']]
+
+# sort by date
+sales_Store6 = sales_Store6.sort_values(by=['Date'])
+sales_Store20 = sales_Store20.sort_values(by=['Date'])
+sales_Store25 = sales_Store25.sort_values(by=['Date'])
+sales_Store29 = sales_Store29.sort_values(by=['Date'])
+
+# groupby Date if multiple entries per date exist
+sales_Store6 = sales_Store6.groupby('Date').Sales.sum()
+sales_Store20 = sales_Store20.groupby('Date').Sales.sum()
+sales_Store25 = sales_Store25.groupby('Date').Sales.sum()
+sales_Store29 = sales_Store29.groupby('Date').Sales.sum()
+
+# Determine rolling statistics
+rolmean_S6 = sales_Store6.rolling(window=14).mean()
+rolmean_S20 = sales_Store20.rolling(window=14).mean()
+rolmean_S25 = sales_Store25.rolling(window=14).mean()
+rolmean_S29 = sales_Store29.rolling(window=14).mean()
+
+# Plot rolling statistics for Store 1
+store6 = plt.plot(rolmean_S6, color='turquoise', label='Store 6')
+store20 = plt.plot(rolmean_S20, color='mediumpurple', label='Store 20')
+store25 = plt.plot(rolmean_S25, color='indigo', label='Store 25')
+store29 = plt.plot(rolmean_S29, color='darkgoldenrod', label='Store 29')
+plt.xlabel("Date")
+plt.ylabel("Sales")
+plt.legend(loc='best')
+plt.title('Sales Figures of several Stores')
+plt.show()
