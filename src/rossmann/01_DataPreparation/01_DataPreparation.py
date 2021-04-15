@@ -485,6 +485,8 @@ sales_missing_values_count = sales.isnull().sum()
 # print(sales['Promo2SinceYear'].loc[(sales.Promo2SinceYear == 0)].count())
 # print --> 508031
 
+# ----------------------------------------------------------------------------------------------------------
+
 # Null values: PromoInterval 544
 # TODO: transform information (split into separate cols)
 # print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
@@ -524,6 +526,18 @@ sales = sales.drop('StateHoliday', axis=1)
 
 # Add one-hot encoded column to sales data
 sales = pd.concat([sales, OH_cols_num], axis=1)
+
+# -----------------------------------------------------------------------------------------
+
+# TODO: Transform all objects to a numeric value (OneHotEncoder or LabelEncoder)
+# Categorical variables
+s = (sales.dtypes == 'object')
+object_cols = list(s[s].index)
+
+print("Categorical variables:")
+print(object_cols)
+# ['StoreType', 'Assortment', 'PromoInterval']
+# --> Drop PromoInterval (already transformed to isPromoMonth
 
 # -----------------------------------------------------------------------------------------
 
