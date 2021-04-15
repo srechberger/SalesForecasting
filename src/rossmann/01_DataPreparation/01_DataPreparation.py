@@ -42,9 +42,10 @@
 # import libraries
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import OneHotEncoder
 
 # set display options
-pd.set_option('display.max_columns', 15)
+pd.set_option('display.max_columns', 20)
 
 # -----------------------------------------------------------------------------
 
@@ -54,8 +55,8 @@ pd.set_option('display.max_columns', 15)
 train_file_path = "../../../data/rossmann/input/train.csv"
 store_file_path = "../../../data/rossmann/input/store.csv"
 # test and submission not relevant for modeling
-# test_file_path = "../../data/rossmann/input/test.csv"
-# submission_file_path = "../../data/rossmann/input/sample_submission.csv"
+# test_file_path = "../../../data/rossmann/input/test.csv"
+# submission_file_path = "../../../data/rossmann/input/sample_submission.csv"
 
 # Load data
 train = pd.read_csv(train_file_path)
@@ -63,7 +64,6 @@ store = pd.read_csv(store_file_path)
 # test and submission not relevant for modeling
 # test = pd.read_csv(test_file_path)
 # submission = pd.read_csv(submission_file_path)
-
 # -----------------------------------------------------------------------------
 
 ### Step 2: Prepare the data
@@ -157,6 +157,7 @@ train['StateHoliday'].unique()
 train['StateHoliday'] = train['StateHoliday'].astype('str')
 # Replace '0' to 'n'
 train['StateHoliday'] = train['StateHoliday'].str.replace('0', 'n')
+# print(train['StateHoliday'].unique()) --> ['n' 'a' 'b' 'c']
 
 # ---------- SchoolHoliday (int64) ----------
 # indicates if the (Store, Date) was affected by the closure of public schools
@@ -489,6 +490,27 @@ sales_missing_values_count = sales.isnull().sum()
 # print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
 # print --> 508031
 
+# ----------------------------------------------------------------------------------------------------------
+
+# TODO: transform information (split into separate cols) - OneHotEncoder
+# print(train['StateHoliday'].unique()) --> ['n' 'a' 'b' 'c']
+
+# One-Hot Encoding (nominal - categorical columns)
+# Apply one-hot encoder to 'StateHoliday'
+OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
+OH_cols_num = pd.DataFrame(OH_encoder.fit_transform(sales[['StateHoliday']]))
+
+# One-hot encoding removed index --> reset of index
+OH_cols_num.index = sales.index
+
+# Removement of the categorical column from sales data
+sales = sales.drop('StateHoliday', axis=1)
+
+# Add one-hot encoded column to sales data
+sales = pd.concat([sales, OH_cols_num], axis=1)
+
+# -----------------------------------------------------------------------------------------
+
 # Store data for modeling tasks
 sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
 
@@ -517,9 +539,9 @@ rolmean = grouped_sales.rolling(window=30).mean() #window size 30 denotes 30 day
 rolstd = grouped_sales.rolling(window=30).std()
 
 # Plot rolling statistics for all stores
-orig = plt.plot(grouped_sales, color='blue', label='Original')
-mean = plt.plot(rolmean, color='red', label='Rolling Mean')
-std = plt.plot(rolstd, color='black', label='Rolling Std')
+orig = plt.plot(grouped_sales, color='turquoise', label='Original')
+mean = plt.plot(rolmean, color='darkgoldenrod', label='Rolling Mean')
+std = plt.plot(rolstd, color='indigo', label='Rolling Std')
 plt.xlabel("Date")
 plt.ylabel("Sales")
 plt.legend(loc='best')
@@ -546,9 +568,9 @@ rolmean_S1 = sales_Store1.rolling(window=30).mean() #window size 30 denotes 30 d
 rolstd_S1 = sales_Store1.rolling(window=30).std()
 
 # Plot rolling statistics for Store 1
-orig_S1 = plt.plot(sales_Store1, color='blue', label='Original')
-mean_S1 = plt.plot(rolmean_S1, color='red', label='Rolling Mean')
-std_S1 = plt.plot(rolstd_S1, color='black', label='Rolling Std')
+orig_S1 = plt.plot(sales_Store1, color='turquoise', label='Original')
+mean_S1 = plt.plot(rolmean_S1, color='darkgoldenrod', label='Rolling Mean')
+std_S1 = plt.plot(rolstd_S1, color='indigo', label='Rolling Std')
 plt.xlabel("Date")
 plt.ylabel("Sales")
 plt.legend(loc='best')
@@ -562,43 +584,36 @@ plt.show()
 sales_Store6 = sales.loc[sales.Store == 6]
 sales_Store20 = sales.loc[sales.Store == 20]
 sales_Store25 = sales.loc[sales.Store == 25]
-sales_Store29 = sales.loc[sales.Store == 29]
 
 # Store data for modeling tasks
 sales_Store6 .to_pickle('../../../data/rossmann/intermediate/store6.pkl')
 sales_Store20.to_pickle('../../../data/rossmann/intermediate/store20.pkl')
 sales_Store25.to_pickle('../../../data/rossmann/intermediate/store25.pkl')
-sales_Store29.to_pickle('../../../data/rossmann/intermediate/store29.pkl')
 
 # get defined columns
 sales_Store6 = sales_Store6.loc[:, ['Sales', 'Date']]
 sales_Store20 = sales_Store20.loc[:, ['Sales', 'Date']]
 sales_Store25 = sales_Store25.loc[:, ['Sales', 'Date']]
-sales_Store29 = sales_Store29.loc[:, ['Sales', 'Date']]
 
 # sort by date
 sales_Store6 = sales_Store6.sort_values(by=['Date'])
 sales_Store20 = sales_Store20.sort_values(by=['Date'])
 sales_Store25 = sales_Store25.sort_values(by=['Date'])
-sales_Store29 = sales_Store29.sort_values(by=['Date'])
 
 # groupby Date if multiple entries per date exist
 sales_Store6 = sales_Store6.groupby('Date').Sales.sum()
 sales_Store20 = sales_Store20.groupby('Date').Sales.sum()
 sales_Store25 = sales_Store25.groupby('Date').Sales.sum()
-sales_Store29 = sales_Store29.groupby('Date').Sales.sum()
 
 # Determine rolling statistics
 rolmean_S6 = sales_Store6.rolling(window=14).mean()
 rolmean_S20 = sales_Store20.rolling(window=14).mean()
 rolmean_S25 = sales_Store25.rolling(window=14).mean()
-rolmean_S29 = sales_Store29.rolling(window=14).mean()
 
 # Plot rolling statistics for Store 1
 store6 = plt.plot(rolmean_S6, color='turquoise', label='Store 6')
-store20 = plt.plot(rolmean_S20, color='mediumpurple', label='Store 20')
+store20 = plt.plot(rolmean_S20, color='darkgoldenrod', label='Store 20')
 store25 = plt.plot(rolmean_S25, color='indigo', label='Store 25')
-store29 = plt.plot(rolmean_S29, color='darkgoldenrod', label='Store 29')
 plt.xlabel("Date")
 plt.ylabel("Sales")
 plt.legend(loc='best')
