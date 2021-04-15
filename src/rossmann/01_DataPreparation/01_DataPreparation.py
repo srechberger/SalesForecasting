@@ -489,6 +489,22 @@ sales_missing_values_count = sales.isnull().sum()
 # TODO: transform information (split into separate cols)
 # print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
 # print --> 508031
+# print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
+
+# Add new column with month of date column
+sales['Month'] = sales['Date'].dt.month
+
+# Defining a function to check if the PromotionInterval corresponds to the Month
+def label_isPromoMonth (row):
+   if ((row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10])):
+      return 1
+   if ((row['PromoInterval'] == 'Feb,May,Aug,Nov') and (row['Month'] in [2, 5, 8, 11])):
+      return 1
+   if ((row['PromoInterval'] == 'Mar,Jun,Sept,Dec') and (row['Month'] in [3, 6, 9, 12])):
+      return 1
+   return 0
+
+sales['isPromoMonth'] = sales.apply (lambda row: label_isPromoMonth(row), axis=1)
 
 # ----------------------------------------------------------------------------------------------------------
 
