@@ -41,7 +41,6 @@
 
 # import libraries
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
 
 # set display options
@@ -59,7 +58,9 @@ store_file_path = "../../../data/rossmann/input/store.csv"
 # submission_file_path = "../../../data/rossmann/input/sample_submission.csv"
 
 # Load data
+# train = pd.read_csv(train_file_path, index_col='Date', parse_dates=True)
 train = pd.read_csv(train_file_path)
+
 store = pd.read_csv(store_file_path)
 # test and submission not relevant for modeling
 # test = pd.read_csv(test_file_path)
@@ -508,6 +509,12 @@ def label_isPromoMonth (row):
 
 sales['isPromoMonth'] = sales.apply (lambda row: label_isPromoMonth(row), axis=1)
 
+# Add new column with year of date column
+sales['Year'] = sales['Date'].dt.year
+
+# Add new column with month of date column
+sales['DayOfMonth'] = sales['Date'].dt.day
+
 # ----------------------------------------------------------------------------------------------------------
 
 # TODO: transform information (split into separate cols) - OneHotEncoder
@@ -539,7 +546,13 @@ print(object_cols)
 # ['StoreType', 'Assortment', 'PromoInterval']
 # --> Drop PromoInterval (already transformed to isPromoMonth
 
-# -----------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+
+# Generate duplicate Date column
+sales['DateCol'] = sales['Date']
+
+# Set Date as index
+sales = sales.set_index('Date')
 
 # Store data for modeling tasks
 sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
@@ -552,100 +565,3 @@ sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
 
 # output = pd.DataFrame(sales)
 # output.to_csv('../../../data/rossmann/output/sales.csv', index=False)
-
-# --------------------------------------------------------------------------
-## Plot data
-
-# Sum of all stores
-grouped_sales = sales.groupby('Date').Sales.sum()
-# print(grouped_sales)
-
-# Mean of all stores
-# grouped_sales = sales.groupby('Date').Sales.mean()
-# print(grouped_sales)
-
-# Determine rolling statistics
-rolmean = grouped_sales.rolling(window=30).mean() #window size 30 denotes 30 days
-rolstd = grouped_sales.rolling(window=30).std()
-
-# Plot rolling statistics for all stores
-orig = plt.plot(grouped_sales, color='turquoise', label='Original')
-mean = plt.plot(rolmean, color='darkgoldenrod', label='Rolling Mean')
-std = plt.plot(rolstd, color='indigo', label='Rolling Std')
-plt.xlabel("Date")
-plt.ylabel("Sales")
-plt.legend(loc='best')
-plt.title('Summed Sales Figures of all Stores')
-plt.show()
-
-# -----------------------------------------------------------------------------------
-### STORE 1
-
-# Select data for StoreId == 1
-sales_Store1 = sales.loc[sales.Store == 1]
-
-# get defined columns
-sales_Store1 = sales_Store1.loc[:, ['Sales', 'Date']]
-
-# sort by date
-sales_Store1 = sales_Store1.sort_values(by=['Date'])
-
-# groupby Date if multiple entries per date exist
-sales_Store1 = sales_Store1.groupby('Date').Sales.sum()
-
-# Determine rolling statistics
-rolmean_S1 = sales_Store1.rolling(window=30).mean() #window size 30 denotes 30 days
-rolstd_S1 = sales_Store1.rolling(window=30).std()
-
-# Plot rolling statistics for Store 1
-orig_S1 = plt.plot(sales_Store1, color='turquoise', label='Original')
-mean_S1 = plt.plot(rolmean_S1, color='darkgoldenrod', label='Rolling Mean')
-std_S1 = plt.plot(rolstd_S1, color='indigo', label='Rolling Std')
-plt.xlabel("Date")
-plt.ylabel("Sales")
-plt.legend(loc='best')
-plt.title('Sales Figures Store 1')
-plt.show()
-
-# -----------------------------------------------------------------------------------
-### Several Stores
-
-# Select data for different stores
-sales_Store6 = sales.loc[sales.Store == 6]
-sales_Store20 = sales.loc[sales.Store == 20]
-sales_Store25 = sales.loc[sales.Store == 25]
-
-# Store data for modeling tasks
-sales_Store6 .to_pickle('../../../data/rossmann/intermediate/store6.pkl')
-sales_Store20.to_pickle('../../../data/rossmann/intermediate/store20.pkl')
-sales_Store25.to_pickle('../../../data/rossmann/intermediate/store25.pkl')
-
-# get defined columns
-sales_Store6 = sales_Store6.loc[:, ['Sales', 'Date']]
-sales_Store20 = sales_Store20.loc[:, ['Sales', 'Date']]
-sales_Store25 = sales_Store25.loc[:, ['Sales', 'Date']]
-
-# sort by date
-sales_Store6 = sales_Store6.sort_values(by=['Date'])
-sales_Store20 = sales_Store20.sort_values(by=['Date'])
-sales_Store25 = sales_Store25.sort_values(by=['Date'])
-
-# groupby Date if multiple entries per date exist
-sales_Store6 = sales_Store6.groupby('Date').Sales.sum()
-sales_Store20 = sales_Store20.groupby('Date').Sales.sum()
-sales_Store25 = sales_Store25.groupby('Date').Sales.sum()
-
-# Determine rolling statistics
-rolmean_S6 = sales_Store6.rolling(window=14).mean()
-rolmean_S20 = sales_Store20.rolling(window=14).mean()
-rolmean_S25 = sales_Store25.rolling(window=14).mean()
-
-# Plot rolling statistics for Store 1
-store6 = plt.plot(rolmean_S6, color='turquoise', label='Store 6')
-store20 = plt.plot(rolmean_S20, color='darkgoldenrod', label='Store 20')
-store25 = plt.plot(rolmean_S25, color='indigo', label='Store 25')
-plt.xlabel("Date")
-plt.ylabel("Sales")
-plt.legend(loc='best')
-plt.title('Sales Figures of several Stores')
-plt.show()
