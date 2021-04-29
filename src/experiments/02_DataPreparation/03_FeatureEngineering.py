@@ -20,39 +20,18 @@ from sklearn.preprocessing import OneHotEncoder
 import warnings
 warnings.filterwarnings('ignore')
 
-# Exploratory Data Analysis (EDA)
-
 # Get data
 sales = pd.read_pickle('../../../data/rossmann/intermediate/01_SalesDataCleaned/sales.pkl')
 
-# Transform sales to float
-sales['Sales'] = sales['Sales'] * 1.0
+# Transform sales column to float
+sales['Sales'] = sales['Sales'].astype(float)
 
+# ------------------------------------ FEATURE ENGINEERING -----------------------------------------
 
 # Null values: CompetitionDistance 3
 # TODO: imputation of 0 values
 # print(sales['CompetitionDistance'].loc[(sales.CompetitionDistance == 0)].count())
 # result --> 2642
-
-# Null values: CompetitionOpenSinceMonth 354
-# TODO: imputation of 0 values
-# print(sales['CompetitionOpenSinceMonth'].loc[(sales.CompetitionOpenSinceMonth == 0)].count())
-# result --> 323348
-
-# Null values: CompetitionOpenSinceYear 354
-# TODO: imputation of 0 values
-# print(sales['CompetitionOpenSinceYear'].loc[(sales.CompetitionOpenSinceYear == 0)].count())
-# result --> 323348
-
-# Null values: Promo2SinceWeek 544
-# TODO: imputation of 0 values
-# print(sales['Promo2SinceWeek'].loc[(sales.Promo2SinceWeek == 0)].count())
-# result --> 508031
-
-# Null values: Promo2SinceYear 544
-# TODO: imputation of 0 values
-# print(sales['Promo2SinceYear'].loc[(sales.Promo2SinceYear == 0)].count())
-# result --> 508031
 
 # ----------------------------------------------------------------------------------------------------------
 
@@ -62,11 +41,16 @@ sales['Sales'] = sales['Sales'] * 1.0
 # result --> 508031
 # print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
 
-# Add new column with month of date column
-sales['Month'] = sales['Date'].dt.month
+# Add new column with month from date column
+sales['Month'] = sales['DateCol'].dt.month
+# Add new column with year from date column
+sales['Year'] = sales['DateCol'].dt.year
+# Add new column with day of month from date column
+sales['DayOfMonth'] = sales['DateCol'].dt.day
+
 
 # Defining a function to check if the PromotionInterval corresponds to the Month
-def label_isPromoMonth (row):
+def label_is_promo_month(row):
    if ((row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10])):
       return 1
    if ((row['PromoInterval'] == 'Feb,May,Aug,Nov') and (row['Month'] in [2, 5, 8, 11])):
@@ -75,13 +59,9 @@ def label_isPromoMonth (row):
       return 1
    return 0
 
-sales['isPromoMonth'] = sales.apply (lambda row: label_isPromoMonth(row), axis=1)
 
-# Add new column with year of date column
-sales['Year'] = sales['Date'].dt.year
+sales['isPromoMonth'] = sales.apply(lambda row: label_is_promo_month(row), axis=1)
 
-# Add new column with month of date column
-sales['DayOfMonth'] = sales['Date'].dt.day
 
 # ----------------------------------------------------------------------------------------------------------
 
@@ -114,7 +94,7 @@ print(object_cols)
 # ['StoreType', 'Assortment', 'PromoInterval']
 # --> Drop PromoInterval (already transformed to isPromoMonth
 
-
+# ------------------------------- EXPLORATORY DATA ANALYSIS (EDA) ----------------------------
 
 ## Trend Analysis
 # Sales trend over the months and year
@@ -156,23 +136,8 @@ def test_stationarity(timeseries):
 # Testing stationarity of store type a
 test_stationarity(store6)
 
-u = store6.mean()
-print(u)
 
-var = store6.var()
-print(var)
-
-drift = u - (0.5 * var)
-print(drift)
-
-stdev = store6.std()
-print(stdev)
-
-# Standardabweichung und Varianz zu bestimmen, gehört zum kleinen Einmaleins der Betriebswelt.
-# Während die Standardabweichung Unternehmen dabei hilft, Trends und Probleme wie hohe Kostenunterschiede zu erkennen,
-# gibt die Varianzberechnung Aufschluss über die Streuung von Werten.
-# Beide Parameter lassen sich durch Programme wie Excel schnell und leicht erheben.
-
+# ----------------------------------- DATA STORAGE ---------------------------------------------------
 
 # Get data of single stores
 sales_store708 = sales.loc[sales.Store == 708]
