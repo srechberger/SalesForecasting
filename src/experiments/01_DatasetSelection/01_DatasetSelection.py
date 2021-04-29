@@ -25,7 +25,7 @@ print('CV Rossmann: ' + str(cv(rossmann_sales)))
 
 # 02 WALMART (get and prepare data for analysis)
 # https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting
-walmart_path = "../../../data/walmart/train/train.csv"
+walmart_path = "../../../data/walmart/train.csv"
 walmart_data = pd.read_csv(walmart_path)
 # Parse date column from object to datetime
 walmart_data['Date'] = pd.to_datetime(walmart_data['Date'], format="%Y-%m-%d")
