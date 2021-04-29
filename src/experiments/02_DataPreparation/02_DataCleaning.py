@@ -289,9 +289,13 @@ longDistances = store['CompetitionDistance'].loc[(store.CompetitionDistance > 40
 # --> OK
 
 # Null values: CompetitionDistance 3
-# Replace NaN values with 0
-store['CompetitionDistance'] = store['CompetitionDistance'].fillna(0)
+# Replace NaN values with median distance of stores
+store['CompetitionDistance'].fillna(store['CompetitionDistance'].median(), inplace=True)
 
+# Check values
+distance_is_null = store['CompetitionDistance'].isnull().sum()
+# print(distance_is_null)
+# result --> 0 (no missing values)
 
 # ---------- Promo2 (int64) ----------
 # Promo2 is a continuing and consecutive promotion for some stores:
@@ -361,7 +365,6 @@ sales = sales.set_index('Date')
 sales_missing_values_count = sales.isnull().sum()
 # print(sales_missing_values_count)
 # --> OK (no missing values)
-
 
 # -----------------------------------------------------------------------------
 
