@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# sales = pd.read_pickle('../../../data/rossmann/intermediate/sales.pkl')
 train_file_path = "../../../data/rossmann/input/train.csv"
 sales = pd.read_csv(train_file_path)
 
