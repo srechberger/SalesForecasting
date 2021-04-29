@@ -16,11 +16,11 @@ import seaborn as sns
 pd.set_option('display.max_columns', 15)
 
 # Load data
-sales = pd.read_pickle('../../../data/rossmann/intermediate/store6.pkl')
+sales = pd.read_pickle('../../../data/rossmann/intermediate/03_SalesModelingBase/sales_store708.pkl')
 # Create target object
 y = sales.Sales
 # Create features
-features = ['DayOfWeek', 'Date', 'Customers', 'Open', 'Promo', 'StateHoliday', 'SchoolHoliday']
+features = ['DayOfWeek', 'Promo', 'StateHoliday', 'SchoolHoliday', 'DayOfMonth', 'Month', 'Year', 'WeekOfYear', 'IsPromoMonth']
 X = sales[features]
 # Split data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2, random_state=None)
@@ -35,7 +35,7 @@ y_act = y_test.reset_index()
 
 # Plot predictions
 plt.figure(figsize=(14, 6))
-plt.title("Predictions and Test Data (Store 6)")
+plt.title("Predictions and Test Data (Store 708)")
 plt.xlabel("Days")
 plt.ylabel("Sales")
 sns.lineplot(data=predictions['XGBRegressor'], label="XGBRegressor")

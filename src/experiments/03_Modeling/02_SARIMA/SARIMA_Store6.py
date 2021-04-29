@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 
 # Load data
-y = pd.read_pickle('../../../../data/rossmann/intermediate/store6.pkl')
+y = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/sales_store708.pkl')
 # Select Date and Sales columns
 features = ['Date', 'Sales']
 y = y[features]
