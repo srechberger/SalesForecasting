@@ -42,6 +42,8 @@
 # import libraries
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
+import warnings
+warnings.filterwarnings('ignore')
 
 # set display options
 pd.set_option('display.max_columns', 20)

@@ -8,7 +8,7 @@ warnings.filterwarnings('ignore')
 # set display options
 pd.set_option('display.max_columns', 20)
 
-# Funktion für Variationskoeffizient (cv = variationskoeffizient)
+# function for Coefficient of Variation (CV = Variationskoeffizient)
 cv = lambda x: np.std(x, ddof=1) / np.mean(x) * 100
 
 

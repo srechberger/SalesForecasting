@@ -2,6 +2,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
 
 train_file_path = "../../../data/rossmann/input/train.csv"
 sales = pd.read_csv(train_file_path)
@@ -10,10 +12,10 @@ sales = pd.read_csv(train_file_path)
 sales['Date'] = pd.to_datetime(sales['Date'], format="%Y-%m-%d")
 
 
-# Funktion für Variationskoeffizient (cv = koe)
+# function for Coefficient of Variation (CV = Variationskoeffizient)
 cv = lambda x: np.std(x, ddof=1) / np.mean(x) * 100
 
-# Berechnung Variationskoeffizient pro Store
+# CV calculation per store
 rows = []
 for i in range(1, 1116):
     store_data = sales.loc[sales.Store == i]['Sales']
@@ -37,23 +39,16 @@ koe_store = koe_store.sort_values(by='CV', ascending=False)
 # 561       562  16.316082
 # 732       733  12.308368
 #
-# --> Auswahl von 3 Stores mit Schwankungsbreite > 75 %
-# --> StoreIds: 708, 103, 972
+# --> Selection of top 5 stores
+# --> StoreIds: 708, 103, 972, 198, 897
 
 
-# Get data for single stores
+# Get data of single stores
 sales_store708 = sales.loc[sales.Store == 708]
 sales_store103 = sales.loc[sales.Store == 103]
 sales_store972 = sales.loc[sales.Store == 972]
 sales_store198 = sales.loc[sales.Store == 198]
 sales_store897 = sales.loc[sales.Store == 897]
-
-# Store data for modeling tasks
-#sales_store708.to_pickle('../../../data/rossmann/intermediate/store708.pkl')
-#sales_store103.to_pickle('../../../data/rossmann/intermediate/store103.pkl')
-#sales_store972.to_pickle('../../../data/rossmann/intermediate/store972.pkl')
-#sales_store198.to_pickle('../../../data/rossmann/intermediate/store198.pkl')
-# --> In Data Preparation oder Feature Engineering verschieben --> vorzugsweise Feature Eng
 
 def plot_stores(store_data, store_id):
     # get defined columns
@@ -87,3 +82,7 @@ plot_stores(sales_store103, 'Store 103')
 plot_stores(sales_store972, 'Store 972')
 plot_stores(sales_store198, 'Store 198')
 plot_stores(sales_store897, 'Store 897')
+
+# --> Final Selection: 708, 198, 897
+# 708, 103, 972: all 3 stores are affected by refurbishment
+# 198, 897: no refurbishment

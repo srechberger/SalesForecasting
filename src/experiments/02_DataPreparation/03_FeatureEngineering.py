@@ -86,3 +86,9 @@ print(stdev)
 # gibt die Varianzberechnung Aufschluss über die Streuung von Werten.
 # Beide Parameter lassen sich durch Programme wie Excel schnell und leicht erheben.
 
+# Store data for modeling tasks
+#sales_store708.to_pickle('../../../data/rossmann/intermediate/store708.pkl')
+#sales_store103.to_pickle('../../../data/rossmann/intermediate/store103.pkl')
+#sales_store972.to_pickle('../../../data/rossmann/intermediate/store972.pkl')
+#sales_store198.to_pickle('../../../data/rossmann/intermediate/store198.pkl')
+# --> In Data Preparation oder Feature Engineering verschieben --> vorzugsweise Feature Eng
