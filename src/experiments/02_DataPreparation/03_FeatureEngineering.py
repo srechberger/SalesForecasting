@@ -1,24 +1,10 @@
-import numpy as np
-import pandas as pd, datetime
-import seaborn as sns
-import matplotlib.pyplot as plt
-from statsmodels.tsa.stattools import adfuller
-from time import time
-import os
-from math import sqrt
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-import itertools
-import statsmodels.api as sm
-from statsmodels.tsa.stattools import acf,pacf
-from statsmodels.tsa.arima_model import  ARIMA
-from sklearn import model_selection
-from sklearn.metrics import mean_squared_error, r2_score
-from pandas import DataFrame
-import xgboost as xgb
-from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 import warnings
 warnings.filterwarnings('ignore')
+
+# set display options
+pd.set_option('display.max_columns', 20)
 
 # Get data
 sales = pd.read_pickle('../../../data/rossmann/intermediate/01_SalesDataCleaned/sales.pkl')
@@ -28,28 +14,18 @@ sales['Sales'] = sales['Sales'].astype(float)
 
 # ------------------------------------ FEATURE ENGINEERING -----------------------------------------
 
-# Null values: CompetitionDistance 3
-# TODO: imputation of 0 values
-# print(sales['CompetitionDistance'].loc[(sales.CompetitionDistance == 0)].count())
-# result --> 2642
+## Create new columns
 
-# ----------------------------------------------------------------------------------------------------------
-
-# Null values: PromoInterval 544
-# TODO: transform information (split into separate cols)
-# print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
-# result --> 508031
-# print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
-
+# Add new column with day of month from date column
+sales['DayOfMonth'] = sales['DateCol'].dt.day
 # Add new column with month from date column
 sales['Month'] = sales['DateCol'].dt.month
 # Add new column with year from date column
 sales['Year'] = sales['DateCol'].dt.year
-# Add new column with day of month from date column
-sales['DayOfMonth'] = sales['DateCol'].dt.day
+# Add new column with week of year from date column
+sales['WeekOfYear'] = sales.index.weekofyear
 
-
-# Defining a function to check if the PromotionInterval corresponds to the Month
+# Function to check if the PromotionInterval corresponds to the Month col
 def label_is_promo_month(row):
    if ((row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10])):
       return 1
@@ -60,92 +36,99 @@ def label_is_promo_month(row):
    return 0
 
 
-sales['isPromoMonth'] = sales.apply(lambda row: label_is_promo_month(row), axis=1)
+# Add new column IsPromoMonth
+sales['IsPromoMonth'] = sales.apply(lambda row: label_is_promo_month(row), axis=1)
+# Drop PromoInterval after adding IsPromoMonth
+sales = sales.drop('PromoInterval', axis=1)
 
 
-# ----------------------------------------------------------------------------------------------------------
+# Get all variables of dataset
+# print(sales.info())
+#
+# DatetimeIndex: 844338 entries, 2015-07-31 to 2013-01-01
+# Data columns (total 17 columns):
+#  #   Column               Non-Null Count   Dtype
+# ---  ------               --------------   -----
+#  0   Store                844338 non-null  int64
+#  1   DayOfWeek            844338 non-null  int64
+#  2   Sales                844338 non-null  float64
+#  3   Customers            844338 non-null  int64
+#  4   Promo                844338 non-null  int64
+#  5   StateHoliday         844338 non-null  object
+#  6   SchoolHoliday        844338 non-null  int64
+#  7   StoreType            844338 non-null  object
+#  8   Assortment           844338 non-null  object
+#  9   CompetitionDistance  844338 non-null  float64
+#  10  Promo2               844338 non-null  int64
+#  11  DateCol              844338 non-null  datetime64[ns]
+#  12  DayOfMonth           844338 non-null  int64
+#  13  Month                844338 non-null  int64
+#  14  Year                 844338 non-null  int64
+#  15  WeekOfYear           844338 non-null  int64
+#  16  IsPromoMonth         844338 non-null  int64
+# dtypes: datetime64[ns](1), float64(2), int64(11), object(3)
 
-# TODO: transform information (split into separate cols) - OneHotEncoder
-# print(train['StateHoliday'].unique()) --> ['n' 'a' 'b' 'c']
 
-# One-Hot Encoding (nominal - categorical columns)
-# Apply one-hot encoder to 'StateHoliday'
-OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
-OH_cols_num = pd.DataFrame(OH_encoder.fit_transform(sales[['StateHoliday']]))
+## Transform all objects to numeric values
 
-# One-hot encoding removed index --> reset of index
-OH_cols_num.index = sales.index
+# Transform 'StateHoliday'
+# a = public holiday, b = Easter holiday, c = Christmas, 0 = None
+# a, b, c --> is a state holiday
+# n --> is not a state holiday
+sales['StateHoliday'] = sales.StateHoliday.map({'n': 0, 'a': 1, 'b': 1, 'c': 1})
 
-# Removement of the categorical column from sales data
-sales = sales.drop('StateHoliday', axis=1)
-
-# Add one-hot encoded column to sales data
-sales = pd.concat([sales, OH_cols_num], axis=1)
-
-# -----------------------------------------------------------------------------------------
-
-# TODO: Transform all objects to a numeric value (OneHotEncoder or LabelEncoder)
-# Categorical variables
+# Remaining categorical variables
 s = (sales.dtypes == 'object')
 object_cols = list(s[s].index)
 
-print("Categorical variables:")
-print(object_cols)
-# ['StoreType', 'Assortment', 'PromoInterval']
-# --> Drop PromoInterval (already transformed to isPromoMonth
+# print("Categorical variables:")
+# print(object_cols)
+# ['StoreType', 'Assortment']
 
-# ------------------------------- EXPLORATORY DATA ANALYSIS (EDA) ----------------------------
-
-## Trend Analysis
-# Sales trend over the months and year
-sns.factorplot(data=sales, x="Month", y="Sales",
-               col='Promo',
-               hue='Promo2',
-               row="Year")
-plt.show()
-
-# Conclusion: seasonality exists
-
-# Sales trend over days
-sns.factorplot(data=sales, x="DayOfWeek", y="Sales", hue="Promo")
-plt.show()
-
-## Stationary Analysis
+# Transform 'StoreType' and 'Assortment'
+# 'StoreType'  --> 4 different store models: a, b, c, d
+# 'Assortment' --> 3 assortment levels: a = basic, b = extra, c = extended
+label_encoder = LabelEncoder()
+for col in object_cols:
+    sales[col] = label_encoder.fit_transform(sales[col])
 
 
-# Assigning store 6
-store6 = sales[sales.Store == 25]['Sales']
+## Drop not relevant columns
 
-# Rolling mean analysis (Stationary)
+# Drop redundant columns (DateCol)
+sales = sales.drop(['DateCol'], axis=1)
 
-# Function to test the stationarity
-def test_stationarity(timeseries):
-    # Determing rolling statistics
-    roll_mean = timeseries.rolling(window=7).mean()
-    roll_std = timeseries.rolling(window=7).std()
+# Drop columns, which are not available for prediction (Customers)
+sales = sales.drop(['Customers'], axis=1)
 
-    print(roll_std)
 
-    # Plotting rolling statistics:
-    orig = plt.plot(timeseries.resample('W').mean(), color='blue', label='Original')
-    mean = plt.plot(roll_mean.resample('W').mean(), color='red', label='Rolling Mean')
-    std = plt.plot(roll_std.resample('W').mean(), color='green', label='Rolling Std')
-    plt.legend(loc='best')
-    plt.show(block=False)
+## Final Features for Exploratory Data Analysis
 
-# Testing stationarity of store type a
-test_stationarity(store6)
+# print(sales.info())
+#
+# DatetimeIndex: 844338 entries, 2015-07-31 to 2013-01-01
+# Data columns (total 15 columns):
+#  #   Column               Non-Null Count   Dtype
+# ---  ------               --------------   -----
+#  0   Store                844338 non-null  int64
+#  1   DayOfWeek            844338 non-null  int64
+#  2   Sales                844338 non-null  float64
+#  3   Promo                844338 non-null  int64
+#  4   StateHoliday         844338 non-null  int64
+#  5   SchoolHoliday        844338 non-null  int64
+#  6   StoreType            844338 non-null  int32
+#  7   Assortment           844338 non-null  int32
+#  8   CompetitionDistance  844338 non-null  float64
+#  9   Promo2               844338 non-null  int64
+#  10  DayOfMonth           844338 non-null  int64
+#  11  Month                844338 non-null  int64
+#  12  Year                 844338 non-null  int64
+#  13  WeekOfYear           844338 non-null  int64
+#  14  IsPromoMonth         844338 non-null  int64
+# dtypes: float64(2), int32(2), int64(11)
 
 
 # ----------------------------------- DATA STORAGE ---------------------------------------------------
 
-# Get data of single stores
-sales_store708 = sales.loc[sales.Store == 708]
-sales_store198 = sales.loc[sales.Store == 198]
-sales_store897 = sales.loc[sales.Store == 897]
-
 # Store data for modeling tasks
 sales.to_pickle('../../../data/rossmann/intermediate/02_SalesDataPrepared/sales.pkl')
-sales_store708.to_pickle('../../../data/rossmann/intermediate/02_SalesDataPrepared/sales_store708.pkl')
-sales_store198.to_pickle('../../../data/rossmann/intermediate/02_SalesDataPrepared/sales_store198.pkl')
-sales_store897.to_pickle('../../../data/rossmann/intermediate/02_SalesDataPrepared/sales_store897.pkl')

@@ -366,6 +366,19 @@ sales_missing_values_count = sales.isnull().sum()
 # print(sales_missing_values_count)
 # --> OK (no missing values)
 
+
+# -----------------------------------------------------------------------------
+
+## Plausibility Checks
+
+# Dropping all rows, where the store is closed (no sales on closed days)
+sales = sales[sales.Open == 1]
+# Drop Open col (no relevant information anymore)
+sales = sales.drop('Open', axis=1)
+# Days with sales == 0 and store is opened is not plausible (drop rows with zero values)
+sales = sales[sales.Sales != 0]
+
+
 # -----------------------------------------------------------------------------
 
 ## Storage of joined dataframe
