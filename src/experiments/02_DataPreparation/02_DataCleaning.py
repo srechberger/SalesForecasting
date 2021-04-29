@@ -37,11 +37,9 @@
 #           E.g. "Feb,May,Aug,Nov" means each round starts in February, May, August, November
 #                 of any given year for that store
 
-# -----------------------------------------------------------------------------
 
 # import libraries
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -55,18 +53,11 @@ pd.set_option('display.max_columns', 20)
 # Filepaths
 train_file_path = "../../../data/rossmann/input/train.csv"
 store_file_path = "../../../data/rossmann/input/store.csv"
-# test and submission not relevant for modeling
-# test_file_path = "../../../data/rossmann/input/test.csv"
-# submission_file_path = "../../../data/rossmann/input/sample_submission.csv"
 
 # Load data
-# train = pd.read_csv(train_file_path, index_col='Date', parse_dates=True)
 train = pd.read_csv(train_file_path)
-
 store = pd.read_csv(store_file_path)
-# test and submission not relevant for modeling
-# test = pd.read_csv(test_file_path)
-# submission = pd.read_csv(submission_file_path)
+
 # -----------------------------------------------------------------------------
 
 ### Step 2: Prepare the data
@@ -437,6 +428,7 @@ store['PromoInterval'].unique()
 # print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
 
 # -----------------------------------------------------------------------------
+
 # --- Final proof of dataframe ---
 
 # Check dtypes again
@@ -453,111 +445,29 @@ store_missing_values_count = store.isnull().sum()
 # --> OK (no missing values)
 
 # -----------------------------------------------------------------------------
-## Join dataframes
+
+## Join dataframes and final checks
 
 # left join()
 sales = pd.merge(left=train, right=store, how='left', left_on='Store', right_on='Store')
+
+# Generate duplicate date column ('DateCol')
+sales['DateCol'] = sales['Date']
+
+# Set Date as index
+sales = sales.set_index('Date')
 
 # Check null values after left join
 sales_missing_values_count = sales.isnull().sum()
 # print(sales_missing_values_count)
 # --> OK (no missing values)
 
-# Null values: CompetitionDistance 3
-# TODO: imputation of 0 values
-# print(sales['CompetitionDistance'].loc[(sales.CompetitionDistance == 0)].count())
-# print --> 2642
+# -----------------------------------------------------------------------------
 
-# Null values: CompetitionOpenSinceMonth 354
-# TODO: imputation of 0 values
-# print(sales['CompetitionOpenSinceMonth'].loc[(sales.CompetitionOpenSinceMonth == 0)].count())
-# print --> 323348
+## Storage of joined dataframe
 
-# Null values: CompetitionOpenSinceYear 354
-# TODO: imputation of 0 values
-# print(sales['CompetitionOpenSinceYear'].loc[(sales.CompetitionOpenSinceYear == 0)].count())
-# print --> 323348
-
-# Null values: Promo2SinceWeek 544
-# TODO: imputation of 0 values
-# print(sales['Promo2SinceWeek'].loc[(sales.Promo2SinceWeek == 0)].count())
-# print --> 508031
-
-# Null values: Promo2SinceYear 544
-# TODO: imputation of 0 values
-# print(sales['Promo2SinceYear'].loc[(sales.Promo2SinceYear == 0)].count())
-# print --> 508031
-
-# ----------------------------------------------------------------------------------------------------------
-
-# Null values: PromoInterval 544
-# TODO: transform information (split into separate cols)
-# print(sales['PromoInterval'].loc[(sales.PromoInterval == '')].count())
-# print --> 508031
-# print --> ['' 'Jan,Apr,Jul,Oct' 'Feb,May,Aug,Nov' 'Mar,Jun,Sept,Dec']
-
-# Add new column with month of date column
-sales['Month'] = sales['Date'].dt.month
-
-# Defining a function to check if the PromotionInterval corresponds to the Month
-def label_isPromoMonth (row):
-   if ((row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10])):
-      return 1
-   if ((row['PromoInterval'] == 'Feb,May,Aug,Nov') and (row['Month'] in [2, 5, 8, 11])):
-      return 1
-   if ((row['PromoInterval'] == 'Mar,Jun,Sept,Dec') and (row['Month'] in [3, 6, 9, 12])):
-      return 1
-   return 0
-
-sales['isPromoMonth'] = sales.apply (lambda row: label_isPromoMonth(row), axis=1)
-
-# Add new column with year of date column
-sales['Year'] = sales['Date'].dt.year
-
-# Add new column with month of date column
-sales['DayOfMonth'] = sales['Date'].dt.day
-
-# ----------------------------------------------------------------------------------------------------------
-
-# TODO: transform information (split into separate cols) - OneHotEncoder
-# print(train['StateHoliday'].unique()) --> ['n' 'a' 'b' 'c']
-
-# One-Hot Encoding (nominal - categorical columns)
-# Apply one-hot encoder to 'StateHoliday'
-OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
-OH_cols_num = pd.DataFrame(OH_encoder.fit_transform(sales[['StateHoliday']]))
-
-# One-hot encoding removed index --> reset of index
-OH_cols_num.index = sales.index
-
-# Removement of the categorical column from sales data
-sales = sales.drop('StateHoliday', axis=1)
-
-# Add one-hot encoded column to sales data
-sales = pd.concat([sales, OH_cols_num], axis=1)
-
-# -----------------------------------------------------------------------------------------
-
-# TODO: Transform all objects to a numeric value (OneHotEncoder or LabelEncoder)
-# Categorical variables
-s = (sales.dtypes == 'object')
-object_cols = list(s[s].index)
-
-print("Categorical variables:")
-print(object_cols)
-# ['StoreType', 'Assortment', 'PromoInterval']
-# --> Drop PromoInterval (already transformed to isPromoMonth
-
-# --------------------------------------------------------------------------
-
-# Generate duplicate Date column
-sales['DateCol'] = sales['Date']
-
-# Set Date as index
-sales = sales.set_index('Date')
-
-# Store data for modeling tasks
-sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
+# Store data for feature engineering
+sales.to_pickle('../../../data/rossmann/intermediate/01_SalesDataCleaned/sales.pkl')
 
 # this exceeds GitHub's file size limit of 100.00 MB
 # Commands for large files
@@ -565,5 +475,3 @@ sales.to_pickle('../../../data/rossmann/intermediate/sales.pkl')
 # git lfs track "*.pkl"
 # see --> .gitattributes
 
-# output = pd.DataFrame(sales)
-# output.to_csv('../../../data/rossmann/output/sales.csv', index=False)
