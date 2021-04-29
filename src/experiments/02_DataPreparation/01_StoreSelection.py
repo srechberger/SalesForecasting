@@ -50,6 +50,7 @@ sales_store972 = sales.loc[sales.Store == 972]
 sales_store198 = sales.loc[sales.Store == 198]
 sales_store897 = sales.loc[sales.Store == 897]
 
+
 def plot_stores(store_data, store_id):
     # get defined columns
     store_data = store_data.loc[:, ['Sales', 'Date']]
@@ -74,6 +75,7 @@ def plot_stores(store_data, store_id):
     plt.legend(loc='best')
     plt.title(title)
     plt.show()
+
 
 # plot selected stores
 plot_stores(sales, 'All Stores')
