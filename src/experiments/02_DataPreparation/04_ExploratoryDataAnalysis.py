@@ -6,8 +6,6 @@ import math
 import datetime
 import warnings
 
-from matplotlib.figure import SubplotParams
-
 warnings.filterwarnings('ignore')
 
 # set display options
