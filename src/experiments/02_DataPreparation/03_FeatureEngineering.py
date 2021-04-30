@@ -45,28 +45,29 @@ sales = sales.drop('PromoInterval', axis=1)
 # Get all variables of dataset
 # print(sales.info())
 #
-# DatetimeIndex: 844338 entries, 2015-07-31 to 2013-01-01
-# Data columns (total 17 columns):
-#  #   Column               Non-Null Count   Dtype
-# ---  ------               --------------   -----
-#  0   Store                844338 non-null  int64
-#  1   DayOfWeek            844338 non-null  int64
-#  2   Sales                844338 non-null  float64
-#  3   Customers            844338 non-null  int64
-#  4   Promo                844338 non-null  int64
-#  5   StateHoliday         844338 non-null  object
-#  6   SchoolHoliday        844338 non-null  int64
-#  7   StoreType            844338 non-null  object
-#  8   Assortment           844338 non-null  object
-#  9   CompetitionDistance  844338 non-null  float64
-#  10  Promo2               844338 non-null  int64
-#  11  DateCol              844338 non-null  datetime64[ns]
-#  12  DayOfMonth           844338 non-null  int64
-#  13  Month                844338 non-null  int64
-#  14  Year                 844338 non-null  int64
-#  15  WeekOfYear           844338 non-null  int64
-#  16  IsPromoMonth         844338 non-null  int64
-# dtypes: datetime64[ns](1), float64(2), int64(11), object(3)
+# DatetimeIndex: 1017209 entries, 2015-07-31 to 2013-01-01
+# Data columns (total 18 columns):
+#  #   Column               Non-Null Count    Dtype
+# ---  ------               --------------    -----
+#  0   Store                1017209 non-null  int64
+#  1   DayOfWeek            1017209 non-null  int64
+#  2   Sales                1017209 non-null  float64
+#  3   Customers            1017209 non-null  int64
+#  4   Open                 1017209 non-null  int64
+#  5   Promo                1017209 non-null  int64
+#  6   StateHoliday         1017209 non-null  object
+#  7   SchoolHoliday        1017209 non-null  int64
+#  8   StoreType            1017209 non-null  object
+#  9   Assortment           1017209 non-null  object
+#  10  CompetitionDistance  1017209 non-null  float64
+#  11  Promo2               1017209 non-null  int64
+#  12  DateCol              1017209 non-null  datetime64[ns]
+#  13  DayOfMonth           1017209 non-null  int64
+#  14  Month                1017209 non-null  int64
+#  15  Year                 1017209 non-null  int64
+#  16  WeekOfYear           1017209 non-null  int64
+#  17  IsPromoMonth         1017209 non-null  int64
+# dtypes: datetime64[ns](1), float64(2), int64(12), object(3)
 
 
 ## Transform all objects to numeric values
@@ -106,26 +107,27 @@ sales = sales.drop(['Customers'], axis=1)
 
 # print(sales.info())
 #
-# DatetimeIndex: 844338 entries, 2015-07-31 to 2013-01-01
-# Data columns (total 15 columns):
-#  #   Column               Non-Null Count   Dtype
-# ---  ------               --------------   -----
-#  0   Store                844338 non-null  int64
-#  1   DayOfWeek            844338 non-null  int64
-#  2   Sales                844338 non-null  float64
-#  3   Promo                844338 non-null  int64
-#  4   StateHoliday         844338 non-null  int64
-#  5   SchoolHoliday        844338 non-null  int64
-#  6   StoreType            844338 non-null  int32
-#  7   Assortment           844338 non-null  int32
-#  8   CompetitionDistance  844338 non-null  float64
-#  9   Promo2               844338 non-null  int64
-#  10  DayOfMonth           844338 non-null  int64
-#  11  Month                844338 non-null  int64
-#  12  Year                 844338 non-null  int64
-#  13  WeekOfYear           844338 non-null  int64
-#  14  IsPromoMonth         844338 non-null  int64
-# dtypes: float64(2), int32(2), int64(11)
+# DatetimeIndex: 1017209 entries, 2015-07-31 to 2013-01-01
+# Data columns (total 16 columns):
+#  #   Column               Non-Null Count    Dtype
+# ---  ------               --------------    -----
+#  0   Store                1017209 non-null  int64
+#  1   DayOfWeek            1017209 non-null  int64
+#  2   Sales                1017209 non-null  float64
+#  3   Open                 1017209 non-null  int64
+#  4   Promo                1017209 non-null  int64
+#  5   StateHoliday         1017209 non-null  int64
+#  6   SchoolHoliday        1017209 non-null  int64
+#  7   StoreType            1017209 non-null  int32
+#  8   Assortment           1017209 non-null  int32
+#  9   CompetitionDistance  1017209 non-null  float64
+#  10  Promo2               1017209 non-null  int64
+#  11  DayOfMonth           1017209 non-null  int64
+#  12  Month                1017209 non-null  int64
+#  13  Year                 1017209 non-null  int64
+#  14  WeekOfYear           1017209 non-null  int64
+#  15  IsPromoMonth         1017209 non-null  int64
+# dtypes: float64(2), int32(2), int64(12)
 
 
 # ----------------------------------- DATA STORAGE ---------------------------------------------------
