@@ -64,7 +64,7 @@ superstore_sales = superstore_data.groupby('Date').Sales.sum()
 print('CV Superstore: ' + str(cv(superstore_sales)))
 
 
-# 04 TV-SALES (get and prepare data for analysis)
+# 05 TV-SALES (get and prepare data for analysis)
 # https://www.kaggle.com/nomanvb/tv-sales-forecast?select=Date+and+model+wise+sale.csv
 tv_path = "../../../data/tv-sales/tvsales.csv"
 tv_data = pd.read_csv(tv_path)

@@ -24,7 +24,7 @@ for i in range(1, 1116):
 
 koe_store = pd.DataFrame(rows, columns=["StoreId", "CV"])
 koe_store = koe_store.sort_values(by='CV', ascending=False)
-# print(koe_store)
+print(koe_store)
 #
 #       StoreId         CV
 # 707       708  80.636297
