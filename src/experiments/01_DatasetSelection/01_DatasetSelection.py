@@ -112,3 +112,30 @@ plot_data(walmart_data, 'Walmart')
 plot_data(supermarket_data, 'Supermarket')
 plot_data(superstore_data, 'Superstore')
 plot_data(tv_data, 'TV-Sales')
+
+# data information rossmann
+rossmann_store_path = "../../../data/rossmann/input/store.csv"
+rossmann_store = pd.read_csv(rossmann_store_path)
+rossmann = pd.merge(left=rossmann_data, right=rossmann_store, how='left', left_on='Store', right_on='Store')
+print(rossmann.info())
+
+# data information walmart
+walmart_features_path = "../../../data/walmart/features.csv"
+walmart_features = pd.read_csv(walmart_features_path)
+walmart_features['Date'] = pd.to_datetime(walmart_features['Date'], format="%Y-%m-%d")
+walmart = pd.merge(
+    left=walmart_data,
+    right=walmart_features,
+    how='left',
+    left_on=['Store', 'Date'],
+    right_on=['Store', 'Date'])
+print(walmart.info())
+
+# data information supermarket
+print(supermarket_data.info())
+
+# data information superstore
+print(superstore_data.info())
+
+# data information tv sales
+print(tv_data.info())
