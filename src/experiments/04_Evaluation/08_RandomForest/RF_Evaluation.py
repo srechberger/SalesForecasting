@@ -54,13 +54,37 @@ model_708_filename = "../00_Models/rf_model_708.pkl"
 with open(model_708_filename, 'rb') as file:
     rf_model_708 = pickle.load(file)
 
+model_708_vc_filename = "../00_Models/rf_model_708_vc.pkl"
+with open(model_708_vc_filename, 'rb') as file:
+    rf_model_708_vc = pickle.load(file)
+
+model_708_gs_filename = "../00_Models/rf_model_708_gs.pkl"
+with open(model_708_gs_filename, 'rb') as file:
+    rf_model_708_gs = pickle.load(file)
+
 model_198_filename = "../00_Models/rf_model_198.pkl"
 with open(model_198_filename, 'rb') as file:
     rf_model_198 = pickle.load(file)
 
+model_198_vc_filename = "../00_Models/rf_model_198_vc.pkl"
+with open(model_198_vc_filename, 'rb') as file:
+    rf_model_198_vc = pickle.load(file)
+
+model_198_gs_filename = "../00_Models/rf_model_198_gs.pkl"
+with open(model_198_gs_filename, 'rb') as file:
+    rf_model_198_gs = pickle.load(file)
+
 model_897_filename = "../00_Models/rf_model_897.pkl"
 with open(model_897_filename, 'rb') as file:
     rf_model_897 = pickle.load(file)
+
+model_897_vc_filename = "../00_Models/rf_model_897_vc.pkl"
+with open(model_897_vc_filename, 'rb') as file:
+    rf_model_897_vc = pickle.load(file)
+
+model_897_gs_filename = "../00_Models/rf_model_897_gs.pkl"
+with open(model_897_gs_filename, 'rb') as file:
+    rf_model_897_gs = pickle.load(file)
 
 
 # -------------------------- Training Fit ----------------------------------------
@@ -95,26 +119,39 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_708_all = rf_model_all.predict(X_test_2W_708)
 y_test_pred_2W_708 = rf_model_708.predict(X_test_2W_708)
+y_test_pred_2W_708_vc = rf_model_708_vc.predict(X_test_2W_708)
+y_test_pred_2W_708_gs = rf_model_708_gs.predict(X_test_2W_708)
+
 # Evaluation
 print("Store 708 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708))
+print("Validation Curve - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708_gs))
 
 # Prediction
 y_test_pred_1M_708_all = rf_model_all.predict(X_test_1M_708)
 y_test_pred_1M_708 = rf_model_708.predict(X_test_1M_708)
+y_test_pred_1M_708_vc = rf_model_708_vc.predict(X_test_1M_708)
+y_test_pred_1M_708_gs = rf_model_708_gs.predict(X_test_1M_708)
 # Evaluation
 print("Store 708 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708))
+print("Validation Curve - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708_gs))
 
 # Prediction
 y_test_pred_3M_708_all = rf_model_all.predict(X_test_3M_708)
 y_test_pred_3M_708 = rf_model_708.predict(X_test_3M_708)
+y_test_pred_3M_708_vc = rf_model_708_vc.predict(X_test_3M_708)
+y_test_pred_3M_708_gs = rf_model_708_gs.predict(X_test_3M_708)
 # Evaluation
 print("Store 708 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708))
+print("Validation Curve - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708_gs))
 
 print("-----------------------------------------------------------")
 
@@ -124,26 +161,39 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_198_all = rf_model_all.predict(X_test_2W_198)
 y_test_pred_2W_198 = rf_model_198.predict(X_test_2W_198)
+y_test_pred_2W_198_vc = rf_model_198_vc.predict(X_test_2W_198)
+y_test_pred_2W_198_gs = rf_model_198_gs.predict(X_test_2W_198)
+
 # Evaluation
 print("Store 198 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198))
+print("Validation Curve - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198_gs))
 
 # Prediction
 y_test_pred_1M_198_all = rf_model_all.predict(X_test_1M_198)
 y_test_pred_1M_198 = rf_model_198.predict(X_test_1M_198)
+y_test_pred_1M_198_vc = rf_model_198_vc.predict(X_test_1M_198)
+y_test_pred_1M_198_gs = rf_model_198_gs.predict(X_test_1M_198)
 # Evaluation
 print("Store 198 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198))
+print("Validation Curve - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198_gs))
 
 # Prediction
 y_test_pred_3M_198_all = rf_model_all.predict(X_test_3M_198)
 y_test_pred_3M_198 = rf_model_198.predict(X_test_3M_198)
+y_test_pred_3M_198_vc = rf_model_198_vc.predict(X_test_3M_198)
+y_test_pred_3M_198_gs = rf_model_198_gs.predict(X_test_3M_198)
 # Evaluation
 print("Store 198 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198))
+print("Validation Curve - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198_gs))
 
 print("-----------------------------------------------------------")
 
@@ -153,25 +203,38 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_897_all = rf_model_all.predict(X_test_2W_897)
 y_test_pred_2W_897 = rf_model_897.predict(X_test_2W_897)
+y_test_pred_2W_897_vc = rf_model_897_vc.predict(X_test_2W_897)
+y_test_pred_2W_897_gs = rf_model_897_gs.predict(X_test_2W_897)
+
 # Evaluation
 print("Store 897 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897))
+print("Validation Curve - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897_gs))
 
 # Prediction
 y_test_pred_1M_897_all = rf_model_all.predict(X_test_1M_897)
 y_test_pred_1M_897 = rf_model_897.predict(X_test_1M_897)
+y_test_pred_1M_897_vc = rf_model_897_vc.predict(X_test_1M_897)
+y_test_pred_1M_897_gs = rf_model_897_gs.predict(X_test_1M_897)
 # Evaluation
 print("Store 897 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897))
+print("Validation Curve - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897_gs))
 
 # Prediction
 y_test_pred_3M_897_all = rf_model_all.predict(X_test_3M_897)
 y_test_pred_3M_897 = rf_model_897.predict(X_test_3M_897)
+y_test_pred_3M_897_vc = rf_model_897_vc.predict(X_test_3M_897)
+y_test_pred_3M_897_gs = rf_model_897_gs.predict(X_test_3M_897)
 # Evaluation
 print("Store 897 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897))
+print("Validation Curve - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_vc))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_gs))
 
 
