@@ -219,11 +219,8 @@ def plot_stores(actual, predictions, pred_horizont, store_id):
     plt.show()
 
 
+t_3M = pd.date_range(start='2015-01-01', end='2015-03-31')[::-1]
+pred_3M_897 = pd.DataFrame([[x, y] for x, y in zip(t_3M, y_test_pred_3M_897_gs)], columns=["date", "pred"])
+pred_3M_897 = pred_3M_897.set_index('date')
 
-t = pd.date_range(start='2015-01-03', end='2015-03-31')
-new_df = pd.DataFrame([[x, y] for x, y in zip(t, y_test_pred_3M_897_gs)], columns=["date", "pred"])
-# Set Date as index
-new_df = new_df.set_index('date')
-
-plot_stores(y_test_3M_897, new_df, '3 Months', '897')
-
+plot_stores(y_test_3M_897, pred_3M_897, '3 Months', '897')

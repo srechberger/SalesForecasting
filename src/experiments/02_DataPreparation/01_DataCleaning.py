@@ -358,6 +358,9 @@ sales = pd.merge(left=train, right=store, how='left', left_on='Store', right_on=
 # Generate duplicate date column ('DateCol')
 sales['DateCol'] = sales['Date']
 
+# Sort data by Date
+sales.sort_values(by='Date')
+
 # Set Date as index
 sales = sales.set_index('Date')
 

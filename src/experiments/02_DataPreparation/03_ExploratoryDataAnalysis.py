@@ -184,26 +184,26 @@ test_store198 = test.loc[(test.Store == 198)]
 test_store897 = test.loc[(test.Store == 897)]
 
 test_X = test.drop(['Sales'], axis=1)
-test_store708_X_2W = test_store708.loc[(test_store708.index < date_test_2W)].drop(['Sales'], axis=1)
-test_store708_X_1M = test_store708.loc[(test_store708.index < date_test_1M)].drop(['Sales'], axis=1)
-test_store708_X_3M = test_store708.loc[(test_store708.index < date_test_3M)].drop(['Sales'], axis=1)
-test_store198_X_2W = test_store198.loc[(test_store198.index < date_test_2W)].drop(['Sales'], axis=1)
-test_store198_X_1M = test_store198.loc[(test_store198.index < date_test_1M)].drop(['Sales'], axis=1)
-test_store198_X_3M = test_store198.loc[(test_store198.index < date_test_3M)].drop(['Sales'], axis=1)
-test_store897_X_2W = test_store897.loc[(test_store897.index < date_test_2W)].drop(['Sales'], axis=1)
-test_store897_X_1M = test_store897.loc[(test_store897.index < date_test_1M)].drop(['Sales'], axis=1)
-test_store897_X_3M = test_store897.loc[(test_store897.index < date_test_3M)].drop(['Sales'], axis=1)
+test_store708_X_2W = test_store708.loc[(test_store708.index <= date_test_2W)].drop(['Sales'], axis=1)
+test_store708_X_1M = test_store708.loc[(test_store708.index <= date_test_1M)].drop(['Sales'], axis=1)
+test_store708_X_3M = test_store708.loc[(test_store708.index <= date_test_3M)].drop(['Sales'], axis=1)
+test_store198_X_2W = test_store198.loc[(test_store198.index <= date_test_2W)].drop(['Sales'], axis=1)
+test_store198_X_1M = test_store198.loc[(test_store198.index <= date_test_1M)].drop(['Sales'], axis=1)
+test_store198_X_3M = test_store198.loc[(test_store198.index <= date_test_3M)].drop(['Sales'], axis=1)
+test_store897_X_2W = test_store897.loc[(test_store897.index <= date_test_2W)].drop(['Sales'], axis=1)
+test_store897_X_1M = test_store897.loc[(test_store897.index <= date_test_1M)].drop(['Sales'], axis=1)
+test_store897_X_3M = test_store897.loc[(test_store897.index <= date_test_3M)].drop(['Sales'], axis=1)
 
 test_y = test['Sales']
-test_store708_y_2W = test_store708.loc[(test_store708.index < date_test_2W)]['Sales']
-test_store708_y_1M = test_store708.loc[(test_store708.index < date_test_1M)]['Sales']
-test_store708_y_3M = test_store708.loc[(test_store708.index < date_test_3M)]['Sales']
-test_store198_y_2W = test_store198.loc[(test_store198.index < date_test_2W)]['Sales']
-test_store198_y_1M = test_store198.loc[(test_store198.index < date_test_1M)]['Sales']
-test_store198_y_3M = test_store198.loc[(test_store198.index < date_test_3M)]['Sales']
-test_store897_y_2W = test_store897.loc[(test_store897.index < date_test_2W)]['Sales']
-test_store897_y_1M = test_store897.loc[(test_store897.index < date_test_1M)]['Sales']
-test_store897_y_3M = test_store897.loc[(test_store897.index < date_test_3M)]['Sales']
+test_store708_y_2W = test_store708.loc[(test_store708.index <= date_test_2W)]['Sales']
+test_store708_y_1M = test_store708.loc[(test_store708.index <= date_test_1M)]['Sales']
+test_store708_y_3M = test_store708.loc[(test_store708.index <= date_test_3M)]['Sales']
+test_store198_y_2W = test_store198.loc[(test_store198.index <= date_test_2W)]['Sales']
+test_store198_y_1M = test_store198.loc[(test_store198.index <= date_test_1M)]['Sales']
+test_store198_y_3M = test_store198.loc[(test_store198.index <= date_test_3M)]['Sales']
+test_store897_y_2W = test_store897.loc[(test_store897.index <= date_test_2W)]['Sales']
+test_store897_y_1M = test_store897.loc[(test_store897.index <= date_test_1M)]['Sales']
+test_store897_y_3M = test_store897.loc[(test_store897.index <= date_test_3M)]['Sales']
 
 
 # ----------------------------------- DATA STORAGE ---------------------------------------------------
