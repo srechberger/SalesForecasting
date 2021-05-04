@@ -2,6 +2,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 import pickle
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # Get Training Data
@@ -53,14 +54,26 @@ with open(model_all_filename, 'rb') as file:
 model_708_filename = "../00_Models/xgb_model_708.pkl"
 with open(model_708_filename, 'rb') as file:
     xgb_model_708 = pickle.load(file)
+    
+model_708_gs_filename = "../00_Models/xgb_model_708_gs.pkl"
+with open(model_708_gs_filename, 'rb') as file:
+    xgb_model_708_gs = pickle.load(file)
 
 model_198_filename = "../00_Models/xgb_model_198.pkl"
 with open(model_198_filename, 'rb') as file:
     xgb_model_198 = pickle.load(file)
 
+model_198_gs_filename = "../00_Models/xgb_model_198_gs.pkl"
+with open(model_198_gs_filename, 'rb') as file:
+    xgb_model_198_gs = pickle.load(file)
+
 model_897_filename = "../00_Models/xgb_model_897.pkl"
 with open(model_897_filename, 'rb') as file:
     xgb_model_897 = pickle.load(file)
+
+model_897_gs_filename = "../00_Models/xgb_model_897_gs.pkl"
+with open(model_897_gs_filename, 'rb') as file:
+    xgb_model_897_gs = pickle.load(file)
 
 
 # -------------------------- Training Fit ----------------------------------------
@@ -95,26 +108,32 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_708_all = xgb_model_all.predict(X_test_2W_708)
 y_test_pred_2W_708 = xgb_model_708.predict(X_test_2W_708)
+y_test_pred_2W_708_gs = xgb_model_708_gs.predict(X_test_2W_708)
 # Evaluation
 print("Store 708 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_708, y_test_pred_2W_708_gs))
 
 # Prediction
 y_test_pred_1M_708_all = xgb_model_all.predict(X_test_1M_708)
 y_test_pred_1M_708 = xgb_model_708.predict(X_test_1M_708)
+y_test_pred_1M_708_gs = xgb_model_708_gs.predict(X_test_1M_708)
 # Evaluation
 print("Store 708 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_708, y_test_pred_1M_708_gs))
 
 # Prediction
 y_test_pred_3M_708_all = xgb_model_all.predict(X_test_3M_708)
 y_test_pred_3M_708 = xgb_model_708.predict(X_test_3M_708)
+y_test_pred_3M_708_gs = xgb_model_708_gs.predict(X_test_3M_708)
 # Evaluation
 print("Store 708 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_708, y_test_pred_3M_708_gs))
 
 print("-----------------------------------------------------------")
 
@@ -124,26 +143,32 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_198_all = xgb_model_all.predict(X_test_2W_198)
 y_test_pred_2W_198 = xgb_model_198.predict(X_test_2W_198)
+y_test_pred_2W_198_gs = xgb_model_198_gs.predict(X_test_2W_198)
 # Evaluation
 print("Store 198 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_198, y_test_pred_2W_198_gs))
 
 # Prediction
 y_test_pred_1M_198_all = xgb_model_all.predict(X_test_1M_198)
 y_test_pred_1M_198 = xgb_model_198.predict(X_test_1M_198)
+y_test_pred_1M_198_gs = xgb_model_198_gs.predict(X_test_1M_198)
 # Evaluation
 print("Store 198 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_198, y_test_pred_1M_198_gs))
 
 # Prediction
 y_test_pred_3M_198_all = xgb_model_all.predict(X_test_3M_198)
 y_test_pred_3M_198 = xgb_model_198.predict(X_test_3M_198)
+y_test_pred_3M_198_gs = xgb_model_198_gs.predict(X_test_3M_198)
 # Evaluation
 print("Store 198 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_198, y_test_pred_3M_198_gs))
 
 print("-----------------------------------------------------------")
 
@@ -153,23 +178,52 @@ print("-----------------------------------------------------------")
 # Prediction
 y_test_pred_2W_897_all = xgb_model_all.predict(X_test_2W_897)
 y_test_pred_2W_897 = xgb_model_897.predict(X_test_2W_897)
+y_test_pred_2W_897_gs = xgb_model_897_gs.predict(X_test_2W_897)
 # Evaluation
 print("Store 897 - 2 Weeks")
 print("All Stores Model - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897))
+print("Grid Search - RMSE", ":", rmse(y_test_2W_897, y_test_pred_2W_897_gs))
 
 # Prediction
 y_test_pred_1M_897_all = xgb_model_all.predict(X_test_1M_897)
 y_test_pred_1M_897 = xgb_model_897.predict(X_test_1M_897)
+y_test_pred_1M_897_gs = xgb_model_897_gs.predict(X_test_1M_897)
 # Evaluation
 print("Store 897 - 1 Month")
 print("All Stores Model - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897))
+print("Grid Search - RMSE", ":", rmse(y_test_1M_897, y_test_pred_1M_897_gs))
 
 # Prediction
 y_test_pred_3M_897_all = xgb_model_all.predict(X_test_3M_897)
 y_test_pred_3M_897 = xgb_model_897.predict(X_test_3M_897)
+y_test_pred_3M_897_gs = xgb_model_897_gs.predict(X_test_3M_897)
 # Evaluation
 print("Store 897 - 3 Months")
 print("All Stores Model - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_all))
 print("Single Store Model - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897))
+print("Grid Search - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_gs))
+
+
+# ---------------------------------- PLOT PREDICTIONS -----------------------------------
+
+def plot_stores(actual, predictions, pred_horizont, store_id):
+    title = 'Sales Predictions Store ' + store_id + ' - ' + pred_horizont
+    act = plt.plot(actual, color='turquoise', label='Actual')
+    pred = plt.plot(predictions, color='darkgoldenrod', label='Predictions')
+    plt.xlabel("Day")
+    plt.ylabel("Sales")
+    plt.legend(loc='best')
+    plt.title(title)
+    plt.show()
+
+
+
+t = pd.date_range(start='2015-01-03', end='2015-03-31')
+new_df = pd.DataFrame([[x, y] for x, y in zip(t, y_test_pred_3M_897_gs)], columns=["date", "pred"])
+# Set Date as index
+new_df = new_df.set_index('date')
+
+plot_stores(y_test_3M_897, new_df, '3 Months', '897')
+
