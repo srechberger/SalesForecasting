@@ -22,7 +22,7 @@ p = d = q = range(0, 2)
 pdq = list(itertools.product(p, d, q))
 
 # Generate all different combinations of seasonal p, q and q triplets
-seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
+seasonal_pdq = [(x[0], x[1], x[2], 7) for x in list(itertools.product(p, d, q))]
 
 # Hyperparameter tuning for ARIMA
 #
@@ -44,7 +44,7 @@ for param in pdq:
 
             results = mod.fit()
 
-            aic_text = 'ARIMA{}x{}12 - AIC:{}'.format(param, param_seasonal, results.aic)
+            aic_text = 'ARIMA{}x{}7 - AIC:{}'.format(param, param_seasonal, results.aic)
             rows.append([results.aic, aic_text])
         except:
             continue
@@ -53,12 +53,12 @@ aic_results = pd.DataFrame(rows, columns=["AIC", "Params"])
 aic_results = aic_results.sort_values(by='AIC', ascending=True)
 print(aic_results)
 # Best AIC
-# ARIMA(0, 0, 1)x(0, 1, 1, 12)12 - AIC:12944.85
+# ARIMA(1, 1, 1)x(0, 1, 1, 7)7 - AIC:12821.39
 
 # Fitting the data to ARIMA model
 model_sarima = sm.tsa.statespace.SARIMAX(y_897,
-                                         order=(0, 0, 1),
-                                         seasonal_order=(0, 1, 1, 12),
+                                         order=(1, 1, 1),
+                                         seasonal_order=(0, 1, 1, 7),
                                          enforce_stationarity=False,
                                          enforce_invertibility=False)
 
