@@ -100,6 +100,17 @@ print("Store 708 RMSE", ":", rmse(y_train_708, y_train_predicted_708))
 print("Store 198 RMSE", ":", rmse(y_train_198, y_train_predicted_198))
 print("Store 897 RMSE", ":", rmse(y_train_897, y_train_predicted_897))
 
+# Prediction
+y_train_predicted_708_gs = xgb_model_708_gs.predict(X_train_708)
+y_train_predicted_198_gs = xgb_model_198_gs.predict(X_train_198)
+y_train_predicted_897_gs = xgb_model_897_gs.predict(X_train_897)
+
+# Evaluation
+print("Training Evaluation - Grid Search Model")
+print("Store 708 RMSE", ":", rmse(y_train_708, y_train_predicted_708_gs))
+print("Store 198 RMSE", ":", rmse(y_train_198, y_train_predicted_198_gs))
+print("Store 897 RMSE", ":", rmse(y_train_897, y_train_predicted_897_gs))
+
 print("-----------------------------------------------------------")
 
 
@@ -219,8 +230,7 @@ def plot_stores(actual, predictions, pred_horizont, store_id):
     plt.show()
 
 
-t_3M = pd.date_range(start='2015-01-01', end='2015-03-31')[::-1]
-pred_3M_897 = pd.DataFrame([[x, y] for x, y in zip(t_3M, y_test_pred_3M_897_gs)], columns=["date", "pred"])
+pred_3M_897 = pd.DataFrame([[x, y] for x, y in zip(y_test_3M_897.index, y_test_pred_3M_897_gs)], columns=["date", "pred"])
 pred_3M_897 = pred_3M_897.set_index('date')
 
 plot_stores(y_test_3M_897, pred_3M_897, '3 Months', '897')

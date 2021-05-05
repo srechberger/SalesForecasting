@@ -111,6 +111,28 @@ print("Store 708 RMSE", ":", rmse(y_train_708, y_train_predicted_708))
 print("Store 198 RMSE", ":", rmse(y_train_198, y_train_predicted_198))
 print("Store 897 RMSE", ":", rmse(y_train_897, y_train_predicted_897))
 
+# Prediction
+y_train_predicted_708_vc = rf_model_708_vc.predict(X_train_708)
+y_train_predicted_198_vc = rf_model_198_vc.predict(X_train_198)
+y_train_predicted_897_vc = rf_model_897_vc.predict(X_train_897)
+
+# Evaluation
+print("Training Evaluation - Validation Curve Model")
+print("Store 708 RMSE", ":", rmse(y_train_708, y_train_predicted_708_vc))
+print("Store 198 RMSE", ":", rmse(y_train_198, y_train_predicted_198_vc))
+print("Store 897 RMSE", ":", rmse(y_train_897, y_train_predicted_897_vc))
+
+# Prediction
+y_train_predicted_708_gs = rf_model_708_gs.predict(X_train_708)
+y_train_predicted_198_gs = rf_model_198_gs.predict(X_train_198)
+y_train_predicted_897_gs = rf_model_897_gs.predict(X_train_897)
+
+# Evaluation
+print("Training Evaluation - Grid Search Model")
+print("Store 708 RMSE", ":", rmse(y_train_708, y_train_predicted_708_gs))
+print("Store 198 RMSE", ":", rmse(y_train_198, y_train_predicted_198_gs))
+print("Store 897 RMSE", ":", rmse(y_train_897, y_train_predicted_897_gs))
+
 print("-----------------------------------------------------------")
 
 
