@@ -223,7 +223,7 @@ def plot_stores(actual, predictions, pred_horizont, store_id):
     title = 'Sales Predictions Store ' + store_id + ' - ' + pred_horizont
     act = plt.plot(actual, color='turquoise', label='Actual')
     pred = plt.plot(predictions, color='darkgoldenrod', label='Predictions')
-    plt.xlabel("Day")
+    plt.xlabel("Date")
     plt.ylabel("Sales")
     plt.legend(loc='best')
     plt.title(title)
