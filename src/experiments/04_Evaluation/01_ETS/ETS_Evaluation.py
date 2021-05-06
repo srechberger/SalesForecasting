@@ -230,9 +230,9 @@ holt_pred_2W_708 = holt_pred_2W_708.set_index('date')
 plot_stores(y_train_708, holt_model_708.fittedvalues, y_test_2W_708, holt_pred_2W_708,
             '2 Weeks', '708', 'holt')
 
-holt_winters_pred_2W_708 = pd.DataFrame([[x, y] for x, y in zip(y_test_2W_708.index, holt_winters_pred_708_2W)],
+holt_winters_pred_3M_897 = pd.DataFrame([[x, y] for x, y in zip(y_test_3M_897.index, holt_winters_pred_897_3M)],
                                         columns=["date", "pred"])
-holt_winters_pred_2W_708 = holt_winters_pred_2W_708.set_index('date')
-plot_stores(y_train_708, holt_winters_model_708.fittedvalues, y_test_2W_708, holt_winters_pred_2W_708,
-            '2 Weeks', '708', 'holt winters')
+holt_winters_pred_3M_897 = holt_winters_pred_3M_897.set_index('date')
+plot_stores(y_train_897, holt_winters_model_897.fittedvalues, y_test_3M_897, holt_winters_pred_3M_897,
+            '3 Months', '897', 'holt winters')
 
