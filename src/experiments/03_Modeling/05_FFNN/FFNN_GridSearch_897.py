@@ -55,7 +55,7 @@ def build_model(neurons):
 # Construct the Regressor model
 regressor = KerasRegressor(build_fn=build_model, verbose=0)
 parameters = {'batch_size': [5, 10, 20],  # Take half of the training data
-              'epochs': [100, 300, 500],
+              'epochs': [200],
               'neurons': [4, 5, 10, 15, 20]}
 
 grid_search = GridSearchCV(estimator=regressor,
@@ -86,5 +86,7 @@ ffnn_model.save('../../04_Evaluation/00_Models/ffnn_model_897_gs')
 
 # Show the learning curves
 history_df = pd.DataFrame(history.history)
-history_df.plot()
+plot = history_df.plot()
+path = "../../../../data/rossmann/output/ffnn_learning_curve_198"
+plot.savefig(path)
 # plt.show()
