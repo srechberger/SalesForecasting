@@ -13,7 +13,10 @@ os.system('python 03_SVR/SVR.py')
 
 os.system('python 04_K-NN/KNN.py')
 
-os.system('python 05_FFNN/FFNN.py')
+os.system('python 05_FFNN/FFNN_Baseline.py')
+os.system('python 05_FFNN/FFNN_GridSearch_708.py')
+os.system('python 05_FFNN/FFNN_GridSearch_198.py')
+os.system('python 05_FFNN/FFNN_GridSearch_897.py')
 
 os.system('python 06_LSTM/LSTM.py')
 
