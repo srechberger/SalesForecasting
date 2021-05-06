@@ -2,6 +2,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 import pickle
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # Get Training Data
@@ -260,3 +261,20 @@ print("Validation Curve - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_vc)
 print("Grid Search - RMSE", ":", rmse(y_test_3M_897, y_test_pred_3M_897_gs))
 
 
+# ---------------------------------- PLOT PREDICTIONS -----------------------------------
+
+def plot_stores(actual, predictions, pred_horizont, store_id):
+    title = 'Sales Predictions Store ' + store_id + ' - ' + pred_horizont
+    act = plt.plot(actual, color='turquoise', label='Actual')
+    pred = plt.plot(predictions, color='darkgoldenrod', label='Predictions')
+    plt.xlabel("Date")
+    plt.ylabel("Sales")
+    plt.legend(loc='best')
+    plt.title(title)
+    plt.show()
+
+
+pred_3M_897 = pd.DataFrame([[x, y] for x, y in zip(y_test_3M_897.index, y_test_pred_3M_897_gs)], columns=["date", "pred"])
+pred_3M_897 = pred_3M_897.set_index('date')
+
+plot_stores(y_test_3M_897, pred_3M_897, '3 Months', '897')
