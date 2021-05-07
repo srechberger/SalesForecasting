@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 
 # Get Training Data
 # Store 897
-X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store897/train_store897_X.pkl')
-y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store897/train_store897_y.pkl')
+X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_X.pkl')
+y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_y.pkl')
 
 # Get Test Data
 # Store 897
-X_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store897/test_store897_X_3M.pkl')
-y_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store897/test_store897_y_3M.pkl')
+X_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_X_3M.pkl')
+y_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_3M.pkl')
 
 # Drop not important features
 X_train_897 = X_train_897.drop([
@@ -54,9 +54,9 @@ def build_model(neurons):
 
 # Construct the Regressor model
 regressor = KerasRegressor(build_fn=build_model, verbose=0)
-parameters = {'batch_size': [5, 10, 20],  # Take half of the training data
-              'epochs': [200],
-              'neurons': [4, 5, 10, 15, 20]}
+parameters = {'batch_size': [5, 10, 20],
+              'epochs': [300],
+              'neurons': [20, 25, 30, 40]}
 
 grid_search = GridSearchCV(estimator=regressor,
                            param_grid=parameters,
@@ -69,7 +69,7 @@ best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
 
 print('Best Parameters:', best_parameters)
-
+# Best Parameters: {'batch_size': 5, 'epochs': 300, 'neurons': 30}
 
 # -----------------------------------------------------------------------------------------------
 # Build model with best params of GridSearchCV
@@ -86,7 +86,7 @@ ffnn_model.save('../../04_Evaluation/00_Models/ffnn_model_897_gs')
 
 # Show the learning curves
 history_df = pd.DataFrame(history.history)
-plot = history_df.plot()
-path = "../../../../data/rossmann/output/ffnn_learning_curve_198"
-plot.savefig(path)
+history_df.plot()
+path = "../../../../data/rossmann/output/ffnn_learning_curve_897"
+plt.savefig(path)
 # plt.show()

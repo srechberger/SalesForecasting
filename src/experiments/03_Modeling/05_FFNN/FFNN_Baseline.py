@@ -1,7 +1,9 @@
 import pandas as pd
 from tensorflow import keras
 from tensorflow.keras import layers
+from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
+
 
 # Get Training Data
 # Store 708
@@ -25,12 +27,32 @@ y_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesM
 X_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_X_3M.pkl')
 y_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_3M.pkl')
 
+# Transform data (X_*) - drop features + min_max_scaler
+# Drop not important features
+features = ['Store', 'StoreType', 'Assortment', 'CompetitionDistance', 'Promo2', 'DayOfMonth', 'IsPromoMonth']
+X_train_708 = X_train_708.drop(features, axis=1)
+X_test_3M_708 = X_test_3M_708.drop(features, axis=1)
+X_train_198 = X_train_198.drop(features, axis=1)
+X_test_3M_198 = X_test_3M_198.drop(features, axis=1)
+X_train_897 = X_train_897.drop(features, axis=1)
+X_test_3M_897 = X_test_3M_897.drop(features, axis=1)
+
+
+# Scale values (performance relevant)
+scaler = MinMaxScaler()
+X_train_708[X_train_708.columns] = scaler.fit_transform(X_train_708[X_train_708.columns])
+X_test_3M_708[X_test_3M_708.columns] = scaler.transform(X_test_3M_708[X_test_3M_708.columns])
+X_train_198[X_train_198.columns] = scaler.fit_transform(X_train_198[X_train_198.columns])
+X_test_3M_198[X_test_3M_198.columns] = scaler.transform(X_test_3M_198[X_test_3M_198.columns])
+X_train_897[X_train_897.columns] = scaler.fit_transform(X_train_897[X_train_897.columns])
+X_test_3M_897[X_test_3M_897.columns] = scaler.transform(X_test_3M_897[X_test_3M_897.columns])
+
 
 # ---------------------------- Fit Model - Store 708 ------------------------------------------
 
 # When adding dropout, you may need to increase the number of units in your Dense layers.
 ffnn_model_708_bl = keras.Sequential([
-    layers.Dense(1024, activation='relu', input_shape=[15]),
+    layers.Dense(1024, activation='relu', input_shape=[8]),
     layers.Dropout(0.3),
     layers.BatchNormalization(),
     layers.Dense(1024, activation='relu'),
@@ -72,7 +94,7 @@ ffnn_model_708_bl.save('../../04_Evaluation/00_Models/ffnn_model_708_bl')
 
 # When adding dropout, you may need to increase the number of units in your Dense layers.
 ffnn_model_198_bl = keras.Sequential([
-    layers.Dense(1024, activation='relu', input_shape=[15]),
+    layers.Dense(1024, activation='relu', input_shape=[8]),
     layers.Dropout(0.3),
     layers.BatchNormalization(),
     layers.Dense(1024, activation='relu'),
@@ -114,7 +136,7 @@ ffnn_model_198_bl.save('../../04_Evaluation/00_Models/ffnn_model_198_bl')
 
 # When adding dropout, you may need to increase the number of units in your Dense layers.
 ffnn_model_897_bl = keras.Sequential([
-    layers.Dense(1024, activation='relu', input_shape=[15]),
+    layers.Dense(1024, activation='relu', input_shape=[8]),
     layers.Dropout(0.3),
     layers.BatchNormalization(),
     layers.Dense(1024, activation='relu'),
