@@ -217,7 +217,7 @@ def plot_stores(actual, predictions, pred_horizont, store_id):
     plt.title(title)
     plt.show()
 
-y_test_pred_3M_708_gs = pd.DataFrame([[x, y] for x, y in zip(y_test_3M_708.index, y_test_pred_3M_708_gs)], columns=["date", "pred"])
-y_test_pred_3M_708_gs = y_test_pred_3M_708_gs.set_index('date')
+y_test_pred_3M_198_gs = pd.DataFrame([[x, y] for x, y in zip(y_test_3M_198.index, y_test_pred_3M_198_gs)], columns=["date", "pred"])
+y_test_pred_3M_198_gs = y_test_pred_3M_198_gs.set_index('date')
 
-plot_stores(y_test_3M_708, y_test_pred_3M_708_gs, '3 Months', '708')
+plot_stores(y_test_3M_198, y_test_pred_3M_198_gs, '3 Months', '198')
