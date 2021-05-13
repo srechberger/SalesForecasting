@@ -93,7 +93,7 @@ class DeepModelTS():
 
         # Defining the model
         model = Sequential()
-        model.add(LSTM(self.LSTM_layer_depth, activation='relu', input_shape=(self.lag, 1)))
+        model.add(LSTM(self.LSTM_layer_depth, activation='relu', return_sequences=True, input_shape=(self.lag, 1)))
         model.add(Dense(1))
         model.compile(optimizer='adam', loss='mse')
 
