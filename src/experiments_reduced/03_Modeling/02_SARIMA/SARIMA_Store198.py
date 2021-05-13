@@ -53,11 +53,11 @@ aic_results = pd.DataFrame(rows, columns=["AIC", "Params"])
 aic_results = aic_results.sort_values(by='AIC', ascending=True)
 print(aic_results)
 # Best AIC
-# ARIMA(1, 0, 1)x(1, 1, 1, 7)12 - AIC:11829.44
+# ARIMA(0, 1, 1)x(1, 1, 1, 7)7 - AIC:759.59
 
 # Fitting the data to ARIMA model
 model_sarima = sm.tsa.statespace.SARIMAX(y_198,
-                                         order=(1, 0, 1),
+                                         order=(0, 1, 1),
                                          seasonal_order=(1, 1, 1, 7),
                                          enforce_stationarity=False,
                                          enforce_invertibility=False)
