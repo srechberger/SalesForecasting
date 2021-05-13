@@ -222,10 +222,10 @@ bestRF_897 = gridRF_897.fit(X_train_897, y_train_897)
 
 # Print best params
 print('Store 708: ', bestRF_708.best_params_)
-# Store 708:  {'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 5, 'n_estimators': 15}
+# Store 708:  {'max_depth': 5, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 30}
 
 # Fit Model Store 708
-rf_model_708_gs = RandomForestRegressor(n_estimators=15, max_depth=10, min_samples_split=5, min_samples_leaf=5)
+rf_model_708_gs = RandomForestRegressor(n_estimators=30, max_depth=5, min_samples_split=2, min_samples_leaf=2)
 rf_model_708_gs.fit(X_train_708, y_train_708)
 
 # Save Model Store 708
@@ -235,10 +235,10 @@ with open(model_708_gs_filename, 'wb') as file:
 
 
 print('Store 198: ', bestRF_198.best_params_)
-# Store 198:  {'max_depth': 5, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 10}
+# Store 198:  {'max_depth': 8, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 15}
 
 # Fit Model Store 198
-rf_model_198_gs = RandomForestRegressor(n_estimators=10, max_depth=5, min_samples_split=2, min_samples_leaf=2)
+rf_model_198_gs = RandomForestRegressor(n_estimators=15, max_depth=8, min_samples_split=2, min_samples_leaf=2)
 rf_model_198_gs.fit(X_train_198, y_train_198)
 
 # Save Model Store 198
@@ -248,10 +248,10 @@ with open(model_198_gs_filename, 'wb') as file:
 
 
 print('Store 897: ', bestRF_897.best_params_)
-# Store 897:  {'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 2, 'n_estimators': 20}
+# Store 897:  {'max_depth': 8, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 25}
 
 # Fit Model Store 897
-rf_model_897_gs = RandomForestRegressor(n_estimators=20, max_depth=10, min_samples_split=2, min_samples_leaf=5)
+rf_model_897_gs = RandomForestRegressor(n_estimators=25, max_depth=8, min_samples_split=2, min_samples_leaf=2)
 rf_model_897_gs.fit(X_train_897, y_train_897)
 
 # Save Model Store 897
