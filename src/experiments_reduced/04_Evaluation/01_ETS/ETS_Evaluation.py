@@ -7,38 +7,38 @@ from math import sqrt
 # Get Training Data
 # Store 708
 y_train_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y_ets.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y_ets.pkl')
 # Store 198
 y_train_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_y_ets.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_y_ets.pkl')
 # Store 897
 y_train_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_y_ets.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_y_ets.pkl')
 
 # Get Test Data
 # Store 708
 y_test_2W_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708_y_2W.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708_y_2W.pkl')
 y_test_1M_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708_y_1M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708_y_1M.pkl')
 y_test_3M_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708_y_3M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708_y_3M.pkl')
 
 # Store 198
 y_test_2W_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_y_2W.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_y_2W.pkl')
 y_test_1M_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_y_1M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_y_1M.pkl')
 y_test_3M_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_y_3M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_y_3M.pkl')
 
 # Store 897
 y_test_2W_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_2W.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897_y_2W.pkl')
 y_test_1M_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_1M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897_y_1M.pkl')
 y_test_3M_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_3M.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897_y_3M.pkl')
 
 
 # Define Function for RMSE

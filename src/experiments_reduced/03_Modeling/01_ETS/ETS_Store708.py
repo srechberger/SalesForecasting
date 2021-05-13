@@ -8,7 +8,7 @@ warnings.filterwarnings('ignore')
 
 
 # Load data
-train_store708_y_ets = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708.pkl')
+train_store708_y_ets = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708.pkl')
 
 # Select Date and Sales columns
 features = ['Sales']
@@ -44,7 +44,7 @@ holt_winters_model_708 = ExponentialSmoothing(train_store708_y_ets,
 holt_winters_model_708 = holt_winters_model_708.fit(optimized=True)
 
 # Save and store training data
-train_store708_y_ets.to_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y_ets.pkl')
+train_store708_y_ets.to_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y_ets.pkl')
 
 # Save and store models
 ets_ses_model_708_filename = "../../04_Evaluation/00_Models/ets_ses_model_708.pkl"

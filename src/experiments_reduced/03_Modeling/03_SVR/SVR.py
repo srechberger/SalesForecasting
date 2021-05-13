@@ -10,14 +10,14 @@ import matplotlib.pyplot as plt
 
 # Get Training Data
 # Store 708
-X_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_X.pkl')
-y_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y.pkl')
+X_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_X.pkl')
+y_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y.pkl')
 # Store 198
-X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_X.pkl')
-y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_y.pkl')
+X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_X.pkl')
+y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_y.pkl')
 # Store 897
-X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_X.pkl')
-y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_y.pkl')
+X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_X.pkl')
+y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_y.pkl')
 
 
 # --------------------------- Baseline Models  ------------------------------------------

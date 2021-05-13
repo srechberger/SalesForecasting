@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pickle
 
 # Load data
-y_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708.pkl')
+y_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708.pkl')
 # Select Date and Sales columns
 features = ['Sales']
 y_708 = y_708[features]
@@ -71,7 +71,7 @@ sarima_model_708.plot_diagnostics(figsize=(10, 10))
 plt.show()
 
 # Save and store training data
-y_708.to_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y_sarima.pkl')
+y_708.to_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y_sarima.pkl')
 
 # Save and store model
 model_708_filename = "../../04_Evaluation/00_Models/sarima_model_708.pkl"

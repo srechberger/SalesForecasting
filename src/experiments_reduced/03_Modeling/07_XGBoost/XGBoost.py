@@ -6,28 +6,28 @@ from sklearn.metrics import mean_squared_error
 
 # Get Training Data
 # All Stores
-X_train = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/01_AllStores/train_X.pkl')
-y_train = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/01_AllStores/train_y.pkl')
+X_train = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/01_AllStores/train_X.pkl')
+y_train = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/01_AllStores/train_y.pkl')
 # Store 708
-X_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_X.pkl')
-y_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y.pkl')
+X_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_X.pkl')
+y_train_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y.pkl')
 # Store 198
-X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_X.pkl')
-y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_y.pkl')
+X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_X.pkl')
+y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_y.pkl')
 # Store 897
-X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_X.pkl')
-y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_y.pkl')
+X_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_X.pkl')
+y_train_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_y.pkl')
 
 # Get Test Data
 # Store 708
-X_test_3M_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708_X_3M.pkl')
-y_test_3M_708 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708_y_3M.pkl')
+X_test_3M_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708_X_3M.pkl')
+y_test_3M_708 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708_y_3M.pkl')
 # Store 198
-X_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_X_3M.pkl')
-y_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_y_3M.pkl')
+X_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_X_3M.pkl')
+y_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_y_3M.pkl')
 # Store 897
-X_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_X_3M.pkl')
-y_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_3M.pkl')
+X_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897_X_3M.pkl')
+y_test_3M_897 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897_y_3M.pkl')
 
 # Fit Model All Stores
 xgb_model_all = XGBRegressor(n_estimators=100, learning_rate=0.1)

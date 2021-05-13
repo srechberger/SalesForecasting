@@ -8,23 +8,23 @@ import numpy as np
 
 # Get Training Data
 # All Stores
-X_train = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/01_AllStores/train_X.pkl')
-y_train = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/01_AllStores/train_y.pkl')
+X_train = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/01_AllStores/train_X.pkl')
+y_train = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/01_AllStores/train_y.pkl')
 # Store 708
 X_train_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_X.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_X.pkl')
 y_train_708 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708_y.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708_y.pkl')
 # Store 198
 X_train_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_X.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_X.pkl')
 y_train_198 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_y.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_y.pkl')
 # Store 897
 X_train_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_X.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_X.pkl')
 y_train_897 = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897_y.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897_y.pkl')
 
 # Fit Model All Stores
 rf_model_all = RandomForestRegressor(n_estimators=30)

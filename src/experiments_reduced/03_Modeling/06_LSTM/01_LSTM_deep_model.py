@@ -17,7 +17,7 @@ from deep_model import DeepModelTS
 # Reading the data
 # Store 198
 d = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198.pkl')
+    '../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198.pkl')
 d['Datetime'] = d.index
 d = d.loc[:, ['Sales', 'Datetime', 'DayOfWeek', 'Promo', 'StateHoliday']]
 

@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 
 # Get Training Data
 # Store 198
-X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_X.pkl')
-y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198_y.pkl')
+X_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_X.pkl')
+y_train_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198_y.pkl')
 
 # Get Test Data
 # Store 198
-X_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_X_3M.pkl')
-y_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198_y_3M.pkl')
+X_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_X_3M.pkl')
+y_test_3M_198 = pd.read_pickle('../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198_y_3M.pkl')
 
 # Drop not important features
 X_train_198 = X_train_198.drop([

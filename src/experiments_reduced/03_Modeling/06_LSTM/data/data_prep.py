@@ -3,19 +3,19 @@ import datetime
 
 # Train data
 train_708 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/train_store708.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/train_store708.pkl')
 train_198 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/train_store198.pkl')
 train_897 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/train_store897.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/train_store897.pkl')
 
 # Test data
 test_708 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/02_Store708/test_store708.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/test_store708.pkl')
 test_198 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/test_store198.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/test_store198.pkl')
 test_897 = pd.read_pickle(
-    '../../../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897.pkl')
+    '../../../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/test_store897.pkl')
 
 
 # Drop not important features
