@@ -63,17 +63,17 @@ with open(model_897_filename, 'rb') as file:
 # -------------------------- Training Fit ----------------------------------------
 
 # Prediction
-y_train_predicted_708 = sarima_model_708.get_prediction(start=pd.to_datetime('2013-01-01'),
+y_train_predicted_708 = sarima_model_708.get_prediction(start=pd.to_datetime('2014-11-01'),
                                                         end=pd.to_datetime('2014-12-31'),
                                                         dynamic=False)
 y_train_forecasted_708 = y_train_predicted_708.predicted_mean
 
-y_train_predicted_198 = sarima_model_198.get_prediction(start=pd.to_datetime('2013-01-01'),
+y_train_predicted_198 = sarima_model_198.get_prediction(start=pd.to_datetime('2014-11-01'),
                                                         end=pd.to_datetime('2014-12-31'),
                                                         dynamic=False)
 y_train_forecasted_198 = y_train_predicted_198.predicted_mean
 
-y_train_predicted_897 = sarima_model_897.get_prediction(start=pd.to_datetime('2013-01-01'),
+y_train_predicted_897 = sarima_model_897.get_prediction(start=pd.to_datetime('2014-11-01'),
                                                         end=pd.to_datetime('2014-12-31'),
                                                         dynamic=False)
 y_train_forecasted_897 = y_train_predicted_897.predicted_mean
