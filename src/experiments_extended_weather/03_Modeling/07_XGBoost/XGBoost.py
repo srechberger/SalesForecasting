@@ -96,7 +96,7 @@ def hyperParameterTuning(X_train, y_train):
 # ------------------ Store 708 -------------------------------------------------------------------------
 print('Store 708: ', hyperParameterTuning(X_train_708, y_train_708))
 # Store 708:  {'colsample_bytree': 0.7, 'learning_rate': 0.01, 'max_depth': 3, 'min_child_weight': 5,
-#              'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
+# 'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
 
 xgb_model_708_gs = XGBRegressor(
         objective='reg:squarederror',
