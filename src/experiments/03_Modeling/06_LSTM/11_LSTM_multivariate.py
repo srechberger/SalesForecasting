@@ -13,9 +13,10 @@ import pandas as pd
 
 # Reading the data
 d = pd.read_pickle(
-    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/train_store198.pkl')
+    '../../../../data/rossmann/intermediate/03_SalesModelingBase/03_Store198/sales198.pkl')
 d = d.loc[:, ['Sales', 'DayOfWeek', 'Promo', 'StateHoliday', 'SchoolHoliday', 'WeekOfYear']]
 
+print(d)
 
 # convert series to supervised learning
 def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
@@ -56,13 +57,16 @@ n_forecast_days = 90
 # frame as supervised learning
 reframed = series_to_supervised(scaled, n_days, n_forecast_days)
 print(reframed.shape)
-print(reframed)
 
 # split into train and test sets
 values = reframed.values
-n_train_days = 365
+n_train_days = 723
 train = values[:n_train_days, :]
 test = values[n_train_days:, :]
+
+print(len(train))
+print(len(test))
+
 # split into input and outputs
 n_obs = n_days * n_features
 train_X, train_y = train[:, :n_obs], train[:, -n_features]
@@ -103,3 +107,7 @@ inv_y = inv_y[:, 0]
 # calculate RMSE
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
+
+# Store inv_yhat
+
+

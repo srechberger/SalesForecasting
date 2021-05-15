@@ -160,9 +160,9 @@ date_test_1M = datetime.datetime(2015, 1, 31)
 date_test_3M = datetime.datetime(2015, 3, 31)
 
 # Sales
-sales708 = sales.loc[(sales.Store == 708)]
-sales198 = sales.loc[(sales.Store == 198)]
-sales897 = sales.loc[(sales.Store == 897)]
+sales708 = sales.loc[(sales.Store == 708) & (sales.index <= date_test_3M)]
+sales198 = sales.loc[(sales.Store == 198) & (sales.index <= date_test_3M)]
+sales897 = sales.loc[(sales.Store == 897) & (sales.index <= date_test_3M)]
 
 # Prepare Training Data for Modeling
 train = sales.loc[(sales.index <= date_train_until)]
