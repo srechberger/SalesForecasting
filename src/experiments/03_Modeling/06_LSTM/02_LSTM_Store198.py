@@ -160,7 +160,7 @@ fc['forecast'] = yhat
 fc = fc.set_index(fc.Date)
 fc['forecast'] = fc['forecast'].astype(float)
 fc = fc['forecast']
-print(fc)
+fc = fc.sort_index(ascending=False)
 
 # Store Predictions
 fc_train = fc.loc[(fc.index >= train_date_start) & (fc.index < fc_date_start)]

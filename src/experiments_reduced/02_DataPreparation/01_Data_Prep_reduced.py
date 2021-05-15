@@ -20,6 +20,10 @@ date_test_2W = datetime.datetime(2015, 1, 14)
 date_test_1M = datetime.datetime(2015, 1, 31)
 date_test_3M = datetime.datetime(2015, 3, 31)
 
+# Sales
+sales708 = sales.loc[(sales.Store == 708)]
+sales198 = sales.loc[(sales.Store == 198)]
+sales897 = sales.loc[(sales.Store == 897)]
 
 # Prepare Training Data for Modeling
 train = sales.loc[(sales.index >= date_train_from) & (sales.index <= date_train_until)]
@@ -71,6 +75,9 @@ test_store897_y_3M = test_store897.loc[(test_store897.index <= date_test_3M)]['S
 
 # Store data for modeling tasks
 sales.to_pickle('../../../data/rossmann/intermediate/04_SalesModelingReduced/sales.pkl')
+sales708.to_pickle('../../../data/rossmann/intermediate/04_SalesModelingReduced/02_Store708/sales708.pkl')
+sales198.to_pickle('../../../data/rossmann/intermediate/04_SalesModelingReduced/03_Store198/sales198.pkl')
+sales897.to_pickle('../../../data/rossmann/intermediate/04_SalesModelingReduced/04_Store897/sales897.pkl')
 
 # All Stores
 train.to_pickle('../../../data/rossmann/intermediate/04_SalesModelingReduced/01_AllStores/train.pkl')

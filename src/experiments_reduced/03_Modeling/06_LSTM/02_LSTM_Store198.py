@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 # Gather the data
-file_path = "data/sales_708_3M.csv"
+file_path = "data/sales_198_3M.csv"
 df = pd.read_csv(file_path)
 
 # Parse date column, set index, drop redundant col
@@ -42,7 +42,7 @@ train_test_split = 0.11070111  # Prozentueller Anteil Testdaten
                                # 90 / 813 = 0.11070111
 
 # Prediction horizon
-train_date_start = datetime.datetime(2013, 1, 1)
+train_date_start = datetime.datetime(2014, 11, 1)
 fc_date_start = datetime.datetime(2015, 1, 1)
 fc_date_2W = datetime.datetime(2015, 1, 14)
 fc_date_1M = datetime.datetime(2015, 1, 31)
@@ -164,10 +164,10 @@ fc = fc.sort_index(ascending=False)
 
 # Store Predictions
 fc_train = fc.loc[(fc.index >= train_date_start) & (fc.index < fc_date_start)]
-fc_train.to_pickle('predictions/pred_708_train.pkl')
+fc_train.to_pickle('predictions/pred_198_train.pkl')
 fc_2W = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_2W)]
-fc_2W.to_pickle('predictions/pred_708_2W.pkl')
+fc_2W.to_pickle('predictions/pred_198_2W.pkl')
 fc_1M = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_1M)]
-fc_1M.to_pickle('predictions/pred_708_1M.pkl')
+fc_1M.to_pickle('predictions/pred_198_1M.pkl')
 fc_3M = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_3M)]
-fc_3M.to_pickle('predictions/pred_708_3M.pkl')
+fc_3M.to_pickle('predictions/pred_198_3M.pkl')

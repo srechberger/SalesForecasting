@@ -42,7 +42,7 @@ train_test_split = 0.11070111  # Prozentueller Anteil Testdaten
                                # 90 / 813 = 0.11070111
 
 # Prediction horizon
-train_date_start = datetime.datetime(2013, 1, 1)
+train_date_start = datetime.datetime(2014, 11, 1)
 fc_date_start = datetime.datetime(2015, 1, 1)
 fc_date_2W = datetime.datetime(2015, 1, 14)
 fc_date_1M = datetime.datetime(2015, 1, 31)
