@@ -74,12 +74,12 @@ print('Store 708')
 print('Best leaf_size:', best_model_708.best_estimator_.get_params()['leaf_size'])
 print('Best p:', best_model_708.best_estimator_.get_params()['p'])
 print('Best n_neighbors:', best_model_708.best_estimator_.get_params()['n_neighbors'])
-# Best leaf_size: 6
+# Best leaf_size: 21
 # Best p: 1
 # Best n_neighbors: 29
 
 # Fit Model
-knn_708 = neighbors.KNeighborsRegressor(leaf_size=6, p=1, n_neighbors=29)
+knn_708 = neighbors.KNeighborsRegressor(leaf_size=21, p=1, n_neighbors=29)
 knn_708.fit(X_train_708, y_train_708)
 
 # Save Model
@@ -106,10 +106,10 @@ print('Best p:', best_model_198.best_estimator_.get_params()['p'])
 print('Best n_neighbors:', best_model_198.best_estimator_.get_params()['n_neighbors'])
 # Best leaf_size: 42
 # Best p: 1
-# Best n_neighbors: 8
+# Best n_neighbors: 3
 
 # Fit model
-knn_198 = neighbors.KNeighborsRegressor(leaf_size=42, p=1, n_neighbors=8)
+knn_198 = neighbors.KNeighborsRegressor(leaf_size=42, p=1, n_neighbors=3)
 knn_198.fit(X_train_198, y_train_198)
 
 # Save Model
@@ -134,12 +134,12 @@ print('Store 897')
 print('Best leaf_size:', best_model_897.best_estimator_.get_params()['leaf_size'])
 print('Best p:', best_model_897.best_estimator_.get_params()['p'])
 print('Best n_neighbors:', best_model_897.best_estimator_.get_params()['n_neighbors'])
-# Best leaf_size: 42
+# Best leaf_size: 3
 # Best p: 1
-# Best n_neighbors: 12
+# Best n_neighbors: 20
 
 # Fit model
-knn_897 = neighbors.KNeighborsRegressor(leaf_size=42, p=1, n_neighbors=12)
+knn_897 = neighbors.KNeighborsRegressor(leaf_size=3, p=1, n_neighbors=20)
 knn_897.fit(X_train_897, y_train_897)
 
 # Save Model
