@@ -115,11 +115,11 @@ print('Grid Search Store 708')
 print(grid_708.best_params_)
 print(grid_708.best_estimator_)
 print('----------------------------------')
-# {'C': 10000, 'gamma': 0.01, 'kernel': 'rbf'}
-# SVR(C=10000, epsilon=0.01, gamma=0.01)
+# {'C': 10000, 'gamma': 0.001, 'kernel': 'rbf'}
+# SVR(C=10000, epsilon=0.01, gamma=0.001)
 
 # Fit Model
-svr_model_708_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.01)
+svr_model_708_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.001)
 svr_model_708_gs.fit(X_train_708, y_train_708)
 
 # Save Model
@@ -147,11 +147,11 @@ print('Grid Search Store 198')
 print(grid_198.best_params_)
 print(grid_198.best_estimator_)
 print('----------------------------------')
-# {'C': 10000, 'gamma': 0.01, 'kernel': 'rbf'}
-# SVR(C=10000, epsilon=0.01, gamma=0.01)
+# {'C': 10000, 'gamma': 0.001, 'kernel': 'rbf'}
+# SVR(C=10000, epsilon=0.01, gamma=0.001)
 
 # Fit Model
-svr_model_198_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.01)
+svr_model_198_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.001)
 svr_model_198_gs.fit(X_train_198, y_train_198)
 
 # Save Model
@@ -179,11 +179,11 @@ print('Grid Search Store 897')
 print(grid_897.best_params_)
 print(grid_897.best_estimator_)
 print('----------------------------------')
-# {'C': 10000, 'gamma': 0.01, 'kernel': 'rbf'}
-# SVR(C=10000, epsilon=0.01, gamma=0.01)
+# {'C': 10000, 'gamma': 0.001, 'kernel': 'rbf'}
+# SVR(C=10000, epsilon=0.01, gamma=0.001)
 
 # Fit Model
-svr_model_897_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.01)
+svr_model_897_gs = SVR(kernel='rbf', C=10000, epsilon=0.01, gamma=0.001)
 svr_model_897_gs.fit(X_train_897, y_train_897)
 
 # Save Model
