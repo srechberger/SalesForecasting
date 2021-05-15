@@ -96,7 +96,7 @@ def hyperParameterTuning(X_train, y_train):
 # ------------------ Store 708 -------------------------------------------------------------------------
 print('Store 708: ', hyperParameterTuning(X_train_708, y_train_708))
 # Store 708:  {'colsample_bytree': 0.7, 'learning_rate': 0.01, 'max_depth': 3, 'min_child_weight': 5,
-#              'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
+# 'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
 
 xgb_model_708_gs = XGBRegressor(
         objective='reg:squarederror',
@@ -121,16 +121,16 @@ with open(model_708_gs_filename, 'wb') as file:
 
 # ------------------ Store 198 -------------------------------------------------------------------------
 print('Store 198: ', hyperParameterTuning(X_train_198, y_train_198))
-# Store 198:  {'colsample_bytree': 0.7, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 1,
-#              'n_estimators': 100, 'objective': 'reg:squarederror', 'subsample': 0.7}
+# Store 198:  {'colsample_bytree': 0.5, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 1,
+# 'n_estimators': 200, 'objective': 'reg:squarederror', 'subsample': 0.7}
 
 xgb_model_198_gs = XGBRegressor(
         objective='reg:squarederror',
-        colsample_bytree=0.7,
+        colsample_bytree=0.5,
         learning_rate=0.1,
         max_depth=3,
         min_child_weight=1,
-        n_estimators=100,
+        n_estimators=200,
         subsample=0.7)
 
 xgb_model_198_gs.fit(
@@ -148,7 +148,7 @@ with open(model_198_gs_filename, 'wb') as file:
 # ------------------ Store 897 -------------------------------------------------------------------------
 print('Store 897: ', hyperParameterTuning(X_train_897, y_train_897))
 # Store 897:  {'colsample_bytree': 0.5, 'learning_rate': 0.01, 'max_depth': 3, 'min_child_weight': 5,
-#              'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
+# 'n_estimators': 500, 'objective': 'reg:squarederror', 'subsample': 0.7}
 
 xgb_model_897_gs = XGBRegressor(
         objective='reg:squarederror',
