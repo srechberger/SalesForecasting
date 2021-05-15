@@ -1,20 +1,16 @@
-import math
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 import matplotlib.pyplot as plt
-plt.style.use('fivethirtyeight')
-
+import datetime
 
 # Gather the data
-train_file_path = "data/train_198.csv"
-df = pd.read_csv(train_file_path)
+file_path = "data/sales_897_3M.csv"
+df = pd.read_csv(file_path)
 
 # Parse date column, set index, drop redundant col
 df['Date'] = pd.to_datetime(df['Date'], format="%Y-%m-%d")
-# df = df.set_index(df.Date)
 
 # Making sure there are no duplicated data
 # If there are some duplicates we average the data during those duplicated days
@@ -23,16 +19,34 @@ df = df.groupby('Date', as_index=False)['Sales'].mean()
 # Sorting the values
 df.sort_values('Date', inplace=True)
 
-
 # Set Params
-data = df
-Y_var = 'Sales'
-lag = 24
-LSTM_layer_depth = 100
-batch_size = 256
-epochs = 20
-train_test_split = 0.8
+data = df               # Daten
 
+Y_var = 'Sales'         # Zielvariable
+
+lag = 7                 # Die Anzahl der Verzögerungen, die für die Modellierung verwendet werden
+
+LSTM_layer_depth = 100  # Anzahl der Neuronen in der LSTM-Schicht
+
+batch_size = 72         # Die Größe der Datenstichprobe für den Gradientenabstieg,
+                        # der beim Ermitteln der Parameter durch das Deep-Learning-Modell verwendet wird.
+                        # Alle Daten werden in Blöcke mit Batch-Größen unterteilt und über das Netzwerk eingespeist.
+                        # Die internen Parameter des Modells werden aktualisiert,
+                        # nachdem jede Stapelgröße von Daten im Modell vorwärts und rückwärts geht.
+
+epochs = 100            # Anzahl der Trainingsschleifen (Vorwärtsausbreitung zu Rückwärtsausbreitungszyklen)
+
+train_test_split = 0.11070111  # Prozentueller Anteil Testdaten
+                               # Gesamtanzahl Datensätze = 813 (820 - 7 Verzögerungen)
+                               # Testdatensätze = 90 (01/01/2015 - 31/03/2015)
+                               # 90 / 813 = 0.11070111
+
+# Prediction horizon
+train_date_start = datetime.datetime(2013, 1, 1)
+fc_date_start = datetime.datetime(2015, 1, 1)
+fc_date_2W = datetime.datetime(2015, 1, 14)
+fc_date_1M = datetime.datetime(2015, 1, 31)
+fc_date_3M = datetime.datetime(2015, 3, 31)
 
 def create_train_test(use_last_n=None):
     # Extracting the main variable we want to model/forecast
@@ -82,7 +96,6 @@ X_train, X_test, Y_train, Y_test = create_train_test()
 # Defining the model
 model = Sequential()
 model.add(LSTM(LSTM_layer_depth, activation='relu', return_sequences=True, input_shape=(lag, 1)))
-# model.add(LSTM(100, return_sequences=False))
 model.add(Dense(70))
 model.add(Dense(30))
 model.add(Dense(1))
@@ -115,6 +128,7 @@ if (train_test_split > 0):
 
     # Making the prediction list
     yhat = [y[0] for y in model.predict(X_test)]
+    print(X_test)
 
 
 if len(yhat) > 0:
@@ -137,3 +151,23 @@ if len(yhat) > 0:
     plt.legend()
     plt.grid()
     plt.show()
+
+
+# Constructing the forecast dataframe
+fc = data.tail(len(yhat)).copy()
+fc.reset_index(inplace=True)
+fc['forecast'] = yhat
+fc = fc.set_index(fc.Date)
+fc['forecast'] = fc['forecast'].astype(float)
+fc = fc['forecast']
+print(fc)
+
+# Store Predictions
+fc_train = fc.loc[(fc.index >= train_date_start) & (fc.index < fc_date_start)]
+fc_train.to_pickle('predictions/pred_897_train.pkl')
+fc_2W = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_2W)]
+fc_2W.to_pickle('predictions/pred_897_2W.pkl')
+fc_1M = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_1M)]
+fc_1M.to_pickle('predictions/pred_897_1M.pkl')
+fc_3M = fc.loc[(fc.index >= fc_date_start) & (fc.index <= fc_date_3M)]
+fc_3M.to_pickle('predictions/pred_897_3M.pkl')
