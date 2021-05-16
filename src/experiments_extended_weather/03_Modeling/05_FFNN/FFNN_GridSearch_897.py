@@ -69,7 +69,7 @@ best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
 
 print('Best Parameters:', best_parameters)
-# Best Parameters: {'batch_size': 5, 'epochs': 300, 'neurons': 30}
+# Best Parameters: {'batch_size': 5, 'epochs': 300, 'neurons': 40}
 
 # -----------------------------------------------------------------------------------------------
 # Build model with best params of GridSearchCV
