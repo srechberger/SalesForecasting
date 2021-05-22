@@ -105,12 +105,24 @@ train['Date'] = pd.to_datetime(train['Date'], format="%Y-%m-%d")
 
 
 # ---------- Sales (int64) ----------
-# The turnover for any given day (this is what you are predicting)
-
 # Check negative sales
 sales = train['Sales'].loc[(train.Sales < 0)]
-# print --> no negative values
+# 0 --> no negative values
 
+train['Sales'].describe().apply(lambda x: format(x, 'f'))
+# count    1017209.000000
+# mean        5773.818972
+# std         3849.926175
+# min            0.000000
+# 25%         3727.000000
+# 50%         5744.000000
+# 75%         7856.000000
+# max        41551.000000
+
+# ---------- Promo (int64) ----------
+# Check values
+train['Promo'].unique()
+# Result unique values --> [1 0]
 
 # ---------- Customers (int64) ----------
 # Customers - the number of customers on a given day
@@ -149,17 +161,15 @@ train['Promo'].unique()
 
 
 # ---------- StateHoliday (object) ----------
-# StateHoliday - indicates a state holiday.
-# Normally all stores, with few exceptions, are closed on state holidays.
-# Note that all schools are closed on public holidays and weekends.
-# a = public holiday, b = Easter holiday, c = Christmas, 0 = None
+# Possible Values:
+# a = Public holiday, b = Easter holiday, c = Christmas, 0 = None
 train['StateHoliday'].unique()
-# print --> ['0' 'a' 'b' 'c' 0]
+# Values --> ['0' 'a' 'b' 'c' 0]
 # Convert object to string
 train['StateHoliday'] = train['StateHoliday'].astype('str')
 # Replace '0' to 'n'
 train['StateHoliday'] = train['StateHoliday'].str.replace('0', 'n')
-# print(train['StateHoliday'].unique()) --> ['n' 'a' 'b' 'c']
+# Result Values --> ['n' 'a' 'b' 'c']
 
 
 # ---------- SchoolHoliday (int64) ----------
@@ -221,12 +231,16 @@ store_missing_values_count = store.isnull().sum()
 # Decision: drop all columns with at least 30 % missing values
 # 'CompetitionOpenSinceMonth' and 'CompetitionOpenSinceYear' --> 31,75 %
 # 'Promo2SinceWeek' and 'Promo2SinceYear' --> 48,79 %
-store = store.drop([
-    'CompetitionOpenSinceMonth',
-    'CompetitionOpenSinceYear',
-    'Promo2SinceWeek',
-    'Promo2SinceYear'],
-    axis=1)
+drop_features = ['CompetitionOpenSinceMonth', 'CompetitionOpenSinceYear', 'Promo2SinceWeek', 'Promo2SinceYear']
+store = store.drop(drop_features, axis=1)
+
+# Null values: PromoInterval 544
+# Replace null values with empty string
+store['PromoInterval'] = store['PromoInterval'].fillna('')
+
+# Null values: CompetitionDistance 3
+# Replace null values with median distance of stores
+store['CompetitionDistance'].fillna(store['CompetitionDistance'].median(), inplace=True)
 
 # Exception: PromoInterval
 # A PromoInterval can only exist, if Promo2 == 1
@@ -289,7 +303,7 @@ longDistances = store['CompetitionDistance'].loc[(store.CompetitionDistance > 40
 # --> OK
 
 # Null values: CompetitionDistance 3
-# Replace NaN values with median distance of stores
+# Replace null values with median distance of stores
 store['CompetitionDistance'].fillna(store['CompetitionDistance'].median(), inplace=True)
 
 # Check values

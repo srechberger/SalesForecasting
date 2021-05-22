@@ -117,7 +117,7 @@ plot_data(tv_data, 'TV-Sales')
 rossmann_store_path = "../../../data/rossmann/input/store.csv"
 rossmann_store = pd.read_csv(rossmann_store_path)
 rossmann = pd.merge(left=rossmann_data, right=rossmann_store, how='left', left_on='Store', right_on='Store')
-print(rossmann.info())
+
 
 # data information walmart
 walmart_features_path = "../../../data/walmart/features.csv"
@@ -129,13 +129,10 @@ walmart = pd.merge(
     how='left',
     left_on=['Store', 'Date'],
     right_on=['Store', 'Date'])
-print(walmart.info())
 
-# data information supermarket
-print(supermarket_data.info())
-
-# data information superstore
-print(superstore_data.info())
-
-# data information tv sales
-print(tv_data.info())
+# count columns of datasets
+print('Number of columns Walmart: ', len(walmart.columns))
+print('Number of columns Rossmann: ', len(rossmann.columns))
+print('Number of columns Supermarket: ', len(supermarket_data.columns))
+print('Number of columns Superstore: ', len(superstore_data.columns))
+print('Number of columns TV: ', len(tv_data.columns))

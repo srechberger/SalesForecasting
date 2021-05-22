@@ -36,7 +36,7 @@ def plot_distribution(sales_data, no_subplots_per_row):
 
 
 # Plot data
-plot_distribution(sales, 3)
+# plot_distribution(sales, 3)
 
 
 # ------------------------------------- CORRELATION HEATMAP ---------------------------------------------
@@ -53,6 +53,9 @@ sns.heatmap(correlation, mask=mask,
 plt.title("Correlation Heatmap", fontsize=20)
 plt.tight_layout()
 plt.show()
+
+# Drop columns, which are not available for prediction (Customers)
+sales = sales.drop(['Customers'], axis=1)
 
 # -------------------------------- SALES BY DATE ---------------------------------------
 
@@ -88,9 +91,15 @@ plt.title("Sales by Promo2")
 sns.barplot(x='Promo2', y='Sales', data=sales)
 plt.show()
 
+# IsPromoMonth
+plt.figure(figsize=(10, 6))
+plt.title("Sales by IsPromoMonth")
+sns.barplot(x='IsPromoMonth', y='Sales', data=sales)
+plt.show()
+
 # Distribution Promo
-sales_promo0 = sales[sales.Promo == 0]
-sales_promo1 = sales[sales.Promo == 1]
+sales_promo0 = sales.loc[(sales.Promo == 0) & (sales.Sales > 0)]
+sales_promo1 = sales.loc[(sales.Promo == 1) & (sales.Sales > 0)]
 # KDE plots
 sns.kdeplot(data=sales_promo0['Sales'], label="Promo 0", shade=True)
 sns.kdeplot(data=sales_promo1['Sales'], label="Promo 1", shade=True)
@@ -102,9 +111,7 @@ plt.show()
 # Sales trend over the months and year
 sns.factorplot(data=sales, x="Month", y="Sales",
                col='Promo',
-               hue='Promo2',
                row="Year")
-plt.title("Trend Analysis over Month and Year")
 plt.show()
 # Conclusion: seasonality exists
 
@@ -147,8 +154,8 @@ plt.show()
 # -------------------------------- SALES BY COMPETITION DISTANCE ---------------------------------------
 
 # CompetitionDistance
-sales.plot(kind='kde', x='CompetitionDistance', y='Sales', figsize=(15, 4))
-plt.show()
+# sales.plot(kind='kde', x='CompetitionDistance', y='Sales', figsize=(15, 4))
+# plt.show()
 
 
 # ----------------------------------- DATA SPLITTING -------------------------------------------------
@@ -261,17 +268,3 @@ test_store897_X_3M.to_pickle('../../../data/rossmann/intermediate/03_SalesModeli
 test_store897_y_2W.to_pickle('../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_2W.pkl')
 test_store897_y_1M.to_pickle('../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_1M.pkl')
 test_store897_y_3M.to_pickle('../../../data/rossmann/intermediate/03_SalesModelingBase/04_Store897/test_store897_y_3M.pkl')
-
-
-
-
-
-
-
-
-
-
-
-
-
-

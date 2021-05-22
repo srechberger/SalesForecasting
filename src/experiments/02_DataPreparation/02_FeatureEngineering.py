@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import warnings
+
 warnings.filterwarnings('ignore')
 
 # set display options
@@ -14,8 +15,7 @@ sales['Sales'] = sales['Sales'].astype(float)
 
 # ------------------------------------ FEATURE ENGINEERING -----------------------------------------
 
-## Create new columns
-
+# Create new columns
 # Add new column with day of month from date column
 sales['DayOfMonth'] = sales['DateCol'].dt.day
 # Add new column with month from date column
@@ -25,22 +25,22 @@ sales['Year'] = sales['DateCol'].dt.year
 # Add new column with week of year from date column
 sales['WeekOfYear'] = sales.index.weekofyear
 
-# Function to check if the PromotionInterval corresponds to the Month col
+
+# Function to check if the PromotionInterval corresponds to the month col
 def label_is_promo_month(row):
-   if ((row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10])):
-      return 1
-   if ((row['PromoInterval'] == 'Feb,May,Aug,Nov') and (row['Month'] in [2, 5, 8, 11])):
-      return 1
-   if ((row['PromoInterval'] == 'Mar,Jun,Sept,Dec') and (row['Month'] in [3, 6, 9, 12])):
-      return 1
-   return 0
+    if (row['PromoInterval'] == 'Jan,Apr,Jul,Oct') and (row['Month'] in [1, 4, 7, 10]):
+        return 1
+    if (row['PromoInterval'] == 'Feb,May,Aug,Nov') and (row['Month'] in [2, 5, 8, 11]):
+        return 1
+    if (row['PromoInterval'] == 'Mar,Jun,Sept,Dec') and (row['Month'] in [3, 6, 9, 12]):
+        return 1
+    return 0
 
 
 # Add new column IsPromoMonth
 sales['IsPromoMonth'] = sales.apply(lambda row: label_is_promo_month(row), axis=1)
 # Drop PromoInterval after adding IsPromoMonth
 sales = sales.drop('PromoInterval', axis=1)
-
 
 # Get all variables of dataset
 # print(sales.info())
@@ -76,32 +76,28 @@ sales = sales.drop('PromoInterval', axis=1)
 # a = public holiday, b = Easter holiday, c = Christmas, 0 = None
 # a, b, c --> is a state holiday
 # n --> is not a state holiday
-sales['StateHoliday'] = sales.StateHoliday.map({'n': 0, 'a': 1, 'b': 1, 'c': 1})
+# sales['StateHoliday'] = sales.StateHoliday.map({'n': 0, 'a': 1, 'b': 1, 'c': 1})
+
+# print("Categorical variables:")
+# print(object_cols)
+# ['StoreType', 'Assortment', 'StateHoliday']
 
 # Remaining categorical variables
 s = (sales.dtypes == 'object')
 object_cols = list(s[s].index)
 
-# print("Categorical variables:")
-# print(object_cols)
-# ['StoreType', 'Assortment']
-
-# Transform 'StoreType' and 'Assortment'
+# Transform 'StoreType', 'Assortment' and 'StateHoliday'
 # 'StoreType'  --> 4 different store models: a, b, c, d
 # 'Assortment' --> 3 assortment levels: a = basic, b = extra, c = extended
+# 'StateHoliday' --> 4 different state holidays: a = state holiday, b = easter, c = christmas, n = no holiday
 label_encoder = LabelEncoder()
 for col in object_cols:
     sales[col] = label_encoder.fit_transform(sales[col])
-
 
 ## Drop not relevant columns
 
 # Drop redundant columns (DateCol)
 sales = sales.drop(['DateCol'], axis=1)
-
-# Drop columns, which are not available for prediction (Customers)
-sales = sales.drop(['Customers'], axis=1)
-
 
 ## Final Features for Exploratory Data Analysis
 
