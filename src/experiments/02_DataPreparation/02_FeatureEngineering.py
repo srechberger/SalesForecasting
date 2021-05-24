@@ -94,7 +94,6 @@ label_encoder = LabelEncoder()
 for col in object_cols:
     sales[col] = label_encoder.fit_transform(sales[col])
 
-## Drop not relevant columns
 
 # Drop redundant columns (DateCol)
 sales = sales.drop(['DateCol'], axis=1)
@@ -104,26 +103,27 @@ sales = sales.drop(['DateCol'], axis=1)
 # print(sales.info())
 #
 # DatetimeIndex: 1017209 entries, 2015-07-31 to 2013-01-01
-# Data columns (total 16 columns):
+# Data columns (total 17 columns):
 #  #   Column               Non-Null Count    Dtype
 # ---  ------               --------------    -----
 #  0   Store                1017209 non-null  int64
 #  1   DayOfWeek            1017209 non-null  int64
 #  2   Sales                1017209 non-null  float64
-#  3   Open                 1017209 non-null  int64
-#  4   Promo                1017209 non-null  int64
-#  5   StateHoliday         1017209 non-null  int64
-#  6   SchoolHoliday        1017209 non-null  int64
-#  7   StoreType            1017209 non-null  int32
-#  8   Assortment           1017209 non-null  int32
-#  9   CompetitionDistance  1017209 non-null  float64
-#  10  Promo2               1017209 non-null  int64
-#  11  DayOfMonth           1017209 non-null  int64
-#  12  Month                1017209 non-null  int64
-#  13  Year                 1017209 non-null  int64
-#  14  WeekOfYear           1017209 non-null  int64
-#  15  IsPromoMonth         1017209 non-null  int64
-# dtypes: float64(2), int32(2), int64(12)
+#  3   Customers            1017209 non-null  int64
+#  4   Open                 1017209 non-null  int64
+#  5   Promo                1017209 non-null  int64
+#  6   StateHoliday         1017209 non-null  int32
+#  7   SchoolHoliday        1017209 non-null  int64
+#  8   StoreType            1017209 non-null  int32
+#  9   Assortment           1017209 non-null  int32
+#  10  CompetitionDistance  1017209 non-null  float64
+#  11  Promo2               1017209 non-null  int64
+#  12  DayOfMonth           1017209 non-null  int64
+#  13  Month                1017209 non-null  int64
+#  14  Year                 1017209 non-null  int64
+#  15  WeekOfYear           1017209 non-null  int64
+#  16  IsPromoMonth         1017209 non-null  int64
+# dtypes: float64(2), int32(3), int64(12)
 
 
 # ----------------------------------- DATA STORAGE ---------------------------------------------------

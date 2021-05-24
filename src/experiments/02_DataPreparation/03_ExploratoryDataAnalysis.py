@@ -54,9 +54,6 @@ plt.title("Correlation Heatmap", fontsize=20)
 plt.tight_layout()
 plt.show()
 
-# Drop columns, which are not available for prediction (Customers)
-sales = sales.drop(['Customers'], axis=1)
-
 # -------------------------------- SALES BY DATE ---------------------------------------
 
 # Sales by Year
@@ -135,7 +132,6 @@ plt.title("Sales by School Holiday")
 sns.barplot(x='SchoolHoliday', y='Sales', data=sales)
 plt.show()
 
-
 # ----------------------------- SALES BY STORE TYPE AND ASSORTMENT ---------------------------------------
 
 # StoreType
@@ -157,6 +153,11 @@ plt.show()
 # sales.plot(kind='kde', x='CompetitionDistance', y='Sales', figsize=(15, 4))
 # plt.show()
 
+
+# ----------------------------------- DROP NOT RELEVANT FEATURES -------------------------------------
+# Drop columns, which are not available for prediction (Customers)
+drop_feat = ['Customers', 'CompetitionDistance', 'Promo2', 'DayOfMonth', 'Year', 'WeekOfYear', 'IsPromoMonth']
+sales = sales.drop(drop_feat, axis=1)
 
 # ----------------------------------- DATA SPLITTING -------------------------------------------------
 
